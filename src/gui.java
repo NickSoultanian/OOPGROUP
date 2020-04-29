@@ -11,18 +11,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-// to run ensure to have the javafx sdk installed 
-// go here https://gluonhq.com/products/javafx/ 
-// install latest version of javafx sdk which is 14 
-// extra folder into preferred directory on windows I put in C:/ 
-// on intelij add library and make sure it points the lib folder in the sdk fodler 
-// after that headover to file -> Edit Configueration.. 
-// in the text field labed "vim options:~ add this 
-// --module-path "C:\javafx-sdk-14.0.1\lib" --add-modules javafx.controls,javafx.fxml 
-// path in the quotes is provided you put the javafx sdk in the root directory if not just copy+paste 
-// the file path inbetween the qutoes 
-// - Jose L. Camacho 4-23-20 
-
 // purpose - boiler plate program to test and get javafx running 
 // sample code uncomment to test
 //public class gui extends Application {
