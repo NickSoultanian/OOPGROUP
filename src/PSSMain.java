@@ -1,5 +1,6 @@
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 import org.json.simple.JSONArray;
@@ -16,11 +17,10 @@ public class PSSMain {
             //prompting user to import new tasks
             System.out.println("Please enter the file to open: ");
             String userString = userInput.nextLine();
-
-            try
-            {
+            //start by opening a current calender json file
+            try {
                 //using user-prompted text to access json file (in project folder)
-                FileReader reader = new FileReader(userString+".json");
+                FileReader reader = new FileReader(userString + ".json");
 
                 //Read JSON file and save to an object
                 Object tempTask = jsonParser.parse(reader);
@@ -32,12 +32,17 @@ public class PSSMain {
                 Object[] objArr;
                 //call the ParseTaskObject method and pass in JSONArray, save to object array
                 objArr = ParseTaskObject(taskList);
-
+                System.out.println("bro");
                 //test for all objects in the array
-                System.out.println(objArr[0]+"\n");
-                System.out.println(objArr[1]+"\n");
-                System.out.println(objArr[2]+"\n");
-                System.out.println(objArr[3]+"\n");
+                System.out.println(objArr[0] + "\n");
+                System.out.println(objArr[1] + "\n");
+                System.out.println(objArr[2] + "\n");
+                System.out.println(objArr[3] + "\n");
+
+                //pass these objects to the scheduler class and handle this
+
+                //check to see if time conflict (start time and duration and frequency), only if time is within startdate and enddate
+                //check to see if type is within bounds
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -45,16 +50,9 @@ public class PSSMain {
                 e.printStackTrace();
             } catch (ParseException e) {
                 e.printStackTrace();
-            }finally{
-               // reader.close();
             }
 
-            //check to see if time conflict (start time and duration and frequency), only if time is within startdate and enddate
-            //check to see if type is within bounds
-
-            //Filewrite objects(with no conflicts) back into new calendar
         }
-
         //method to parse the JSONArray into separate objects of a
         // JSONObject array for easier access to the objects' contents
         private static Object[] ParseTaskObject(JSONArray task)
