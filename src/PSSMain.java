@@ -17,7 +17,35 @@ public class PSSMain {
             //prompting user to import new tasks
             System.out.println("Please enter the file to open: ");
             String userString = userInput.nextLine();
+
+            //instantiate a scheduler object here!
+
             //start by opening a current calender json file
+            ReadJsonFile(userString, jsonParser);
+            userString = "y";
+            String newUserString;
+            while(userString.equals("y")) {
+                System.out.println("Would you like to add more events? (y/n)");
+                userString = userInput.nextLine();
+                if (userString.equals("n")){
+                    break;
+                }
+
+                System.out.println("Please enter the file to open: ");
+                newUserString = userInput.nextLine();
+                ReadJsonFile(newUserString, jsonParser);
+
+            }
+
+
+
+            //Save the current calender and what has been added.
+            //I need to figure out how our scheduler is saving all of
+
+
+        }
+
+        private static void ReadJsonFile(String userString, JSONParser jsonParser){  //the scheduler object needs to be passed in as well.
             try {
                 //using user-prompted text to access json file (in project folder)
                 FileReader reader = new FileReader(userString + ".json");
@@ -32,17 +60,20 @@ public class PSSMain {
                 Object[] objArr;
                 //call the ParseTaskObject method and pass in JSONArray, save to object array
                 objArr = ParseTaskObject(taskList);
-                System.out.println("bro");
+
                 //test for all objects in the array
                 System.out.println(objArr[0] + "\n");
-                System.out.println(objArr[1] + "\n");
-                System.out.println(objArr[2] + "\n");
-                System.out.println(objArr[3] + "\n");
+                //System.out.println(objArr[1] + "\n");
+                //System.out.println(objArr[2] + "\n");
+                //System.out.println(objArr[3] + "\n");
 
-                //pass these objects to the scheduler class and handle this
+                /*pass these objects to the scheduler class and handle this
+                            //check to see if time conflict (start time and duration and frequency), only if time is within startdate and enddate
+                            //check to see if type is within bounds
 
-                //check to see if time conflict (start time and duration and frequency), only if time is within startdate and enddate
-                //check to see if type is within bounds
+                 */
+
+                reader.close();
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -51,8 +82,8 @@ public class PSSMain {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-
         }
+
         //method to parse the JSONArray into separate objects of a
         // JSONObject array for easier access to the objects' contents
         private static Object[] ParseTaskObject(JSONArray task)

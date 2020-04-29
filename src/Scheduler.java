@@ -4,7 +4,7 @@ public class Scheduler {
     /* 
     *  Time will be adjusted to the nearest fifteen minutes, with the type-handling done by the constructors   
     *  Example code for working with Scheduler in Main: "setStartTime = new Scheduler(this.getStartTime());"
-    */
+     */
 
     // Constructor handles a Task of type RecurringTask
     private Scheduler(RecurringTask rt){
