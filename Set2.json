@@ -4,7 +4,7 @@
     "Type" : "Meal",
     "StartDate" : 20200414,
     "StartTime" : 17,
-    "Duration" : 1,
+    "Duration" : 1.0,
     "EndDate" : 20200507,
     "Frequency" : 1
   },
@@ -13,7 +13,7 @@
     "Type" : "Study",
     "StartDate" : 20200414,
     "StartTime" : 15,
-    "Duration" : 1,
+    "Duration" : 1.0,
     "EndDate" : 20200507,
     "Frequency" : 1
   },
