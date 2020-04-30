@@ -41,7 +41,7 @@ public class Scheduler {
     }    
 
     public List<Task> getRecurringTasks(){            
-        reccuringTasks = checkForDuplicateReccuringTask(reccuringTasks);    
+        checkForDuplicateReccuringTask();    
         return reccurringTasks;
     }
 
@@ -52,7 +52,7 @@ public class Scheduler {
     public void addTask(Task task, String name, int startTime, boolean recurring, boolean antiTask){ 
         // Set values in the task object.       
         task.setName(name);
-        task.setStartTime(getRoundedTime(task.getStartTime()));
+        task.setStartTime(getRoundedTime(startTime));
         task.setRecurring(recurring);
         task.setAntiTask(antiTask);     
         // Add task to the List of Tasks  
@@ -72,12 +72,19 @@ public class Scheduler {
         } return time;  
     }
 
-    // Value of Task must be modified to the nearest 15 minutes
-	public void getRoundedTime(Task task){  
-        // Grab everything after the "." of the time (of type double), i.e the minute value
+    // Value of Task must be modified to the nearest 15 minutes, e.g, 12.35 will return 12.30
+    public double getRoundedTime(Task task){    
+        // Parse double to String in preparation of grabbing its substring.     
         String timeString = String.valueOf(task.getStartTime());
-        time = Double.parseDouble(startTimeString.substring(timeString.indexOf(".") + 1));                
-        tasks = roundNearestFifteenMinutes(time);        
+        // decimalInString is the index of the "." in the String
+        int decimalInString = timeString.substring(timeString.indexOf("."));     
+        // Grab everything after the "." of the time (of type double), i.e the minute value, parse to Double before calling the rounding function.
+        time = Double.parseDouble(startTimeString.substring(decimalInString + 1));
+        // Concatonate the number before the decimal, up until the decimal, with the rest of the value rounded to the nearest fifteen minutes               
+        time = timeString.substring(0, (decimalInString + 1)) + String.valueOf(roundNearestFifteenMinutes(time)); 
+        // Parse back to Double
+        time = Double.parseDouble(time);
+        return time;       
     }
 
     /* 
@@ -87,7 +94,7 @@ public class Scheduler {
     */
 
     // Check all Tasks for any duplicates
-    private List<Task> checkForDuplicateReccuringTask(List<Task> tasks){
+    private void checkForDuplicateReccuringTask(List<Task> tasks){
         // Empty the List each time to avoid floooding the List
         tasks.clear();
         for (int i = 0; i < tasks.size(); i++) {
