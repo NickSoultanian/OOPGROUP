@@ -49,7 +49,7 @@ public class Scheduler {
         tasks.remove(task);
     }
 
-    public void addTask(Task task, String name, int startTime, boolean recurring, boolean antiTask){ 
+    public void addTask(Task task, String name, double startTime, boolean recurring, boolean antiTask){ 
         // Set values in the task object.       
         task.setName(name);
         task.setStartTime(getRoundedTime(startTime));
@@ -73,15 +73,15 @@ public class Scheduler {
     }
 
     // Value of Task must be modified to the nearest 15 minutes, e.g, 12.35 will return 12.30
-	public double getRoundedTime(Task task){    
+    private double getRoundedTime(double startTime){    
         // Parse double to String in preparation of grabbing its substring.     
-        String timeString = String.valueOf(task.getStartTime());
+        String startTimeString = String.valueOf(startTime);
         // decimalInString is the index of the "." in the String
-        int decimalInString = timeString.substring(timeString.indexOf("."));     
+        int decimalInString = startTimeString.substring(startTimeString.indexOf("."));     
         // Grab everything after the "." of the time (of type double), i.e the minute value, parse to Double before calling the rounding function.
         time = Double.parseDouble(startTimeString.substring(decimalInString + 1));
         // Concatonate the number before the decimal, up until the decimal, with the rest of the value rounded to the nearest fifteen minutes               
-        time = timeString.substring(0, (decimalInString + 1)) + String.valueOf(roundNearestFifteenMinutes(time)); 
+        time = startTimeString.substring(0, (decimalInString + 1)) + String.valueOf(roundNearestFifteenMinutes(time)); 
         // Parse back to Double
         time = Double.parseDouble(time);
         return time;       
