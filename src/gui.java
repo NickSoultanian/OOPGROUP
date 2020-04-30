@@ -45,6 +45,11 @@ public class gui extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+
+        // variables to store text field data, data types pending adjust as needed
+        String name;
+
+
         // labels for fields
         Label name = new Label("Name");
         Label type = new Label("Type");
@@ -95,5 +100,7 @@ public class gui extends Application {
         primaryStage.show();
 
         // TODO set getters and setters
+        
+
     }
 }
