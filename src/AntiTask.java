@@ -3,7 +3,7 @@ public class AntiTask implements Task {
     //Name of the event
     private String name = null;
 
-    //Type of the task
+    //Type of task
     String type = null;
 
     //Start date split into its components for easier manipulation
@@ -11,14 +11,25 @@ public class AntiTask implements Task {
     private String startMonth = null;
     private String startYear = null;
 
-    // Start date as a int for required output
+    // Start date as a string for easier output
     private int startDate = 0;
 
-    //Start time as a double for required output
+    //Start time as a string for easier output
     private double startTime = 0;
 
-    //Duration of task as a double
+    //End date will be set to the same as start day for Anti-Task
+    private String endDay = null;
+    private String endMonth = null;
+    private String endYear = null;
+
+    //End date will be set to the same as start day for Anti-Task
+    private int endDate = 0;
+
+    //Duration of task
     private double duration = 0;
+
+    //Anti-Tasks do not use frequency, this variable is to follow the interface
+    private int frequency = 0;
 
     public AntiTask(String name, int startDate, double startTime, double duration) {
 
@@ -27,8 +38,10 @@ public class AntiTask implements Task {
         this.startDate = startDate;
         this.startTime = startTime;
         this.duration = duration;
+        this.endDate = startDate;
 
         splitStartDate();
+        splitEndDate();
 
     }
 
@@ -49,7 +62,7 @@ public class AntiTask implements Task {
 
     @Override
     public void setType(String type) {
-        System.out.println(this.name + " Is an AntiTask and type must be 'Cancellation' ");
+        System.err.println(this.name + " Is an AntiTask, type must be 'Cancellation' ");
     }
 
     @Override
@@ -75,12 +88,14 @@ public class AntiTask implements Task {
 
     @Override
     public int getEndDate() {
-        return 0;
+        compileEndDate();
+        return endDate;
     }
 
     @Override
     public void setEndDate(int endDate) {
-
+        this.endDate = endDate;
+        splitEndDate();
     }
 
     @Override
@@ -95,14 +110,13 @@ public class AntiTask implements Task {
 
     @Override
     public int getFrequency() {
-        System.out.println(this.name + " Is a Transient Task and does not use getFrequency");
-        return 0;
+        return frequency;
     }
 
     @Override
     public boolean setFrequency(int frequency) {
-        System.out.println(this.name + " Is a Transient Task and does not use getFrequency, nothing has changed");
-        return false;
+        System.out.println(this.name + " is a Anti-task and must have a frequency of 0");
+        return true;
     }
 
     @Override
@@ -143,35 +157,38 @@ public class AntiTask implements Task {
 
     @Override
     public int getEndDay() {
-        System.out.println(this.name + " Is a  Anti-Task and does not use getEndDay");
-        return 0;
+        return Integer.parseInt(endDay);
     }
 
     @Override
     public void setEndDay(int endDay) {
-        System.out.println(this.name + " Is a Anti-Task and does not use setEndDay, nothing has changed");
+        if(endDay > 9)
+            this.endDay = String.valueOf(endDay);
+        else
+            this.endDay = String.format("%02d", endDay);
     }
 
     @Override
     public int getEndMonth() {
-        System.out.println(this.name + " Is a Anti-Task and does not use getEndMonth");
-        return 0;
+        return Integer.parseInt(endMonth);
     }
 
     @Override
     public void setEndMonth(int endMonth) {
-        System.out.println(this.name + " Is a Anti-Task and does not use setEndMonth, nothing has changed");
+        if(endMonth > 9)
+            this.endMonth = String.valueOf(endMonth);
+        else
+            this.endMonth = String.format("%02d", endMonth);
     }
 
     @Override
     public int getEndYear() {
-        System.out.println(this.name + " Is a Anti-Task and does not use getEndYear");
-        return 0;
+        return Integer.parseInt(endYear);
     }
 
     @Override
     public void setEndYear(int endYear) {
-        System.out.println(this.name + " Is a Anti-Task and does not use setEndYear, nothing has changed");
+        this.endYear = String.valueOf(endYear);
     }
 
     private void splitStartDate() {
@@ -189,19 +206,18 @@ public class AntiTask implements Task {
         startDate = Integer.parseInt(stringDate);
     }
 
-    public static void main(String args[]){
+    private void splitEndDate(){
+        String stringDate = String.valueOf(endDate);
+        endYear = stringDate.substring(0, 4);
+        endMonth = stringDate.substring(4, 6);
+        endDay = stringDate.substring(6, 8);
+    }
 
-        Task task = new AntiTask("test", 20201106, 5.25, 0.25);
-
-        System.out.println(task.getName());
-        System.out.println(task.getType());
-        System.out.println(task.getStartDate());
-        System.out.println(task.getStartTime());
-        System.out.println(task.getDuration());
-        System.out.println(task.getStartMonth());
-        System.out.println(task.getStartDay());
-        System.out.println(task.getStartYear());
-
-        task.setEndDay(15);
+    private void compileEndDate(){
+        String stringDate;
+        stringDate = String.valueOf(endDay);
+        stringDate = String.valueOf(endMonth).concat(stringDate);
+        stringDate = String.valueOf(endYear).concat(stringDate);
+        endDate = Integer.parseInt(stringDate);
     }
 }

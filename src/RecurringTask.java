@@ -37,7 +37,7 @@ public class RecurringTask implements Task {
     //Frequency of the task 1(daily), 7(weekly), 30(monthly)
     private int frequency = 0;
 
-    public RecurringTask(String name, String type, int startDate, double startTime, float duration, int endDate, int frequency){
+    public RecurringTask(String name, String type, int startDate, double startTime, double duration, int endDate, int frequency){
 
         this.name = name;
 
@@ -113,14 +113,14 @@ public class RecurringTask implements Task {
     @Override
     public boolean setFrequency(int frequency){
         if(frequency == 1)
-            frequency = 1;
+            this.frequency = 1;
         else if(frequency == 7)
-            frequency = 7;
+            this.frequency = 7;
         else if(frequency == 30)
-            frequency = 30;
+            this.frequency = 30;
         else{
             System.err.println(frequency + " is not a valid setting for frequency defaulting to 1");
-            frequency = 1;
+            this.frequency = 1;
             return false;
         }
         return true;
@@ -259,35 +259,5 @@ public class RecurringTask implements Task {
             return false;
         }
         return true;
-    }
-
-    public static void main(String args[]){
-
-        Task task = new RecurringTask("test", "Appointment", 20200609, 13.5, 1, 20201015, 30);
-
-        System.out.println(task.getName());
-        System.out.println(task.getType());
-        System.out.println(task.getStartDate());
-        System.out.println(task.getStartTime());
-        System.out.println(task.getDuration());
-        System.out.println(task.getStartMonth());
-        System.out.println(task.getStartDay());
-        System.out.println(task.getStartYear());
-
-        task.setName("Not test1");
-        task.setStartDay(9);
-        task.setStartMonth(2);
-        task.setStartYear(2019);
-        task.setType("junk");
-
-        System.out.println(task.getName());
-        System.out.println(task.getType());
-        System.out.println(task.getStartDate());
-        System.out.println(task.getStartTime());
-        System.out.println(task.getDuration());
-        System.out.println(task.getStartMonth());
-        System.out.println(task.getStartDay());
-        System.out.println(task.getStartYear());
-
     }
 }

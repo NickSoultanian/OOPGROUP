@@ -112,12 +112,12 @@ public class Calendar {
 	 * Gets the day of the week of a specified day in a specified 
 	 * month and year 
 	 * 
-	 * @Param int specidfed year
-	 * @Param Month specified month
+	 * @Param int specified year
+	 * @Param int specified month
 	 * @Param int specified day
 	 * @Return DayOfWeek of the specified date
 	 */
-	public DayOfWeek getDayOfWeek(int year, Month month, int day) {
+	public DayOfWeek getDayOfWeek(int year, int month, int day) {
 		LocalDate dayOfWeek = LocalDate.of(year, month, day);
 		
 		return dayOfWeek.getDayOfWeek();
@@ -197,6 +197,10 @@ public class Calendar {
 		
 		return months.get(month);
 	}
+
+	public int getMonthAsInt() {
+		return month;
+	}
 	
 	/**
 	 * Returns the current year the calendar is set to
@@ -258,7 +262,7 @@ public class Calendar {
 	 */
 	public void setDate(int year, int month, int day){
 		this.year = year;
-		this.month = month;
+		this.setMonth(month);
 		this.day = day;
 	}
 	
@@ -321,21 +325,4 @@ public class Calendar {
 
 		return out;
 	}
-	
-	public static void main(String[] args) {
-
-
-		Calendar calendar = new Calendar(2020, 4, 20);
-
-		calendar.nextMonth();
-		calendar.setYear(2019);
-
-
-		System.out.println(calendar);
-		System.out.println(calendar.getCalendarMonth());
-		System.out.println(calendar.getDayOfWeek(14));
-
-
-	}
-
 }
