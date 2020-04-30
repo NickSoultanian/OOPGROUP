@@ -41,7 +41,7 @@ public class Scheduler {
     }    
 
     private List<Task> getRecurringTasks(){            
-        reccuringTasks = checkForDuplicateReccuringTask(reccuringTasks);    
+        reccuringTasks = checkForDuplicateTask(reccuringTasks);    
         return reccurringTasks;
     }
 
@@ -88,7 +88,7 @@ public class Scheduler {
     */
 
     // Check all Tasks for any duplicates
-    private List<Task> checkForDuplicateReccuringTask(List<Task> tasks){
+    private List<Task> checkForDuplicateTask(List<Task> tasks){
         // Empty the List each time to avoid floooding the List
         tasks.clear();
         for (int i = 0; i < tasks.size(); i++) {
