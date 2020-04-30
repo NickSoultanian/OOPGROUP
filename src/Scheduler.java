@@ -47,7 +47,7 @@ public class Scheduler {
         return tasks;
     }    
 
-    private void getRecurringTasks(){            
+    private List<Task> getRecurringTasks(){            
         reccuringTasks = checkForDuplicateReccuringTask(reccuringTasksTemp);    
         return reccurringTasks;
     }
@@ -88,7 +88,7 @@ public class Scheduler {
     */
 
     // Check all Tasks for any duplicates
-    private boolean checkForDuplicateReccuringTask(List<Task> tasks){
+    private List<Task> checkForDuplicateReccuringTask(List<Task> tasks){
         // Empty the List each time to avoid floooding the List
         tasks.clear();
         for (int i = 0; i < tasks.size(); i++) {
@@ -98,8 +98,7 @@ public class Scheduler {
                         if(firstTask.get(i).getDate() == secondTask.get(j).getDate()){
                             if(firstTask.get(i).getYear() == secondTask.get(j).getYear()){
                                 // Make sure the same task from the duplicate tasks is not added multiple times.
-                                if (!tasks.get(i).exists() || !tasks.get(j).exists()) reccuringTasks.add(tasks.get(i));                                     
-                                    return true;
+                                if (!tasks.get(i).exists() || !tasks.get(j).exists()) reccuringTasks.add(tasks.get(i));                                                                         
                             }
                         }
                     }
