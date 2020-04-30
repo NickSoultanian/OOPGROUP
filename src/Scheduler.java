@@ -49,13 +49,15 @@ public class Scheduler {
         tasks.remove(task);
     }
 
-    private void addTask(Task task, String name, int startTime, boolean recurring, boolean antiTask){
-        tasks.add(task);
+    private void addTask(Task task, String name, int startTime, boolean recurring, boolean antiTask){ 
+        // Set values in the Task object.       
         task.setName(name);
         task.setStartTime(startTime);
         getRoundedTime(task.getStartTime());
         task.setRecurring(recurring);
-        task.setAntiTask(antiTask);        
+        task.setAntiTask(antiTask);     
+        // Finally, add task to the List of Tasks  
+        tasks.add(task);
     }
 
     // Round to nearest fifteen minutes
