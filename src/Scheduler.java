@@ -1,8 +1,8 @@
 public class Scheduler {
 
-    List<Task> tasks = new ArrayList<Tasks>();
+    private List<Task> tasks = new ArrayList<Tasks>();
 
-    List<Task> reccurringTasks = new ArrayList<Tasks>();
+    private List<Task> reccurringTasks = new ArrayList<Tasks>();
 
     /* 
     *   The following constructors can be utilized to create Tasks 
@@ -11,52 +11,52 @@ public class Scheduler {
     *   "Scheduler <schedulerName> = new Scheduler(new <typeOfTask>, name, recurring, antiTask);"
     */
  
-    private Scheduler(RecurringTask rt, String name, int startTime, boolean recurring, boolean antiTask){ 
+    public Scheduler(RecurringTask rt, String name, int startTime, boolean recurring, boolean antiTask){ 
         addTask(rt, name, startTime, recurring, antiTask);               
     }
     
-    private Scheduler(TransientTask tt, String name, int startTime, boolean recurring, boolean antiTask){      
+    public Scheduler(TransientTask tt, String name, int startTime, boolean recurring, boolean antiTask){      
         addTask(tt, name, startTime, recurring, antiTask);  
     }    
  
-    private Scheduler(AntiTask at, String name, int startTime, boolean recurring, boolean antiTask){
+    public Scheduler(AntiTask at, String name, int startTime, boolean recurring, boolean antiTask){
         addTask(at, name, startTime, recurring, antiTask);                        
     }    
     
-    private List<Task> getAllTasks(){
+    public List<Task> getAllTasks(){
         return tasks;
     }
 
     // TODO: Grab all Tasks for that Day, Month, Week
-    private List<Task> getTasksForDay(){
+    public List<Task> getTasksForDay(){
         return tasks;        
     }
 
-    private List<Task> getTasksForMonth(){
+    public List<Task> getTasksForMonth(){
         return tasks;
     }
 
-    private List<Task> getTasksForWeek(){
+    public List<Task> getTasksForWeek(){
         return tasks;
     }    
 
-    private List<Task> getRecurringTasks(){            
-        reccuringTasks = checkForDuplicateTask(reccuringTasks);    
+    public List<Task> getRecurringTasks(){            
+        reccuringTasks = checkForDuplicateReccuringTask(reccuringTasks);    
         return reccurringTasks;
     }
 
-    private void removeTask(Task task){
+    public void removeTask(Task task){
         tasks.remove(task);
     }
 
-    private void addTask(Task task, String name, int startTime, boolean recurring, boolean antiTask){ 
-        // Set values in the Task object.       
+    public void addTask(Task task, String name, int startTime, boolean recurring, boolean antiTask){ 
+        // Set values in the task objct.       
         task.setName(name);
         task.setStartTime(startTime);
         getRoundedTime(task.getStartTime());
         task.setRecurring(recurring);
         task.setAntiTask(antiTask);     
-        // Finally, add task to the List of Tasks  
+        // Add task to the List of Tasks  
         tasks.add(task);
     }
 
@@ -74,7 +74,7 @@ public class Scheduler {
     }
 
     // Value of Task must be modified to the nearest 15 minutes
-	private void getRoundedTime(Task task){  
+	public void getRoundedTime(Task task){  
         // Grab everything after the "." of the time (of type double), i.e the minute value
         String timeString = String.valueOf(task.getStartTime());
         time = Double.parseDouble(startTimeString.substring(timeString.indexOf(".") + 1));                
@@ -88,7 +88,7 @@ public class Scheduler {
     */
 
     // Check all Tasks for any duplicates
-    private List<Task> checkForDuplicateTask(List<Task> tasks){
+    private List<Task> checkForDuplicateReccuringTask(List<Task> tasks){
         // Empty the List each time to avoid floooding the List
         tasks.clear();
         for (int i = 0; i < tasks.size(); i++) {
