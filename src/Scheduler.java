@@ -81,7 +81,6 @@ public class Scheduler {
         return roundNearestFifteenMinutes(time);        
     }
 
-
     /* 
     *  Can be used to check for conflicting times.
     *  Takes a Task List.
