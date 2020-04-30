@@ -73,7 +73,7 @@ public class Scheduler {
     }
 
     // Value of Task must be modified to the nearest 15 minutes, e.g, 12.35 will return 12.30
-    public double getRoundedTime(Task task){    
+	public double getRoundedTime(Task task){    
         // Parse double to String in preparation of grabbing its substring.     
         String timeString = String.valueOf(task.getStartTime());
         // decimalInString is the index of the "." in the String
@@ -94,7 +94,7 @@ public class Scheduler {
     */
 
     // Check all Tasks for any duplicates
-    private void checkForDuplicateReccuringTask(List<Task> tasks){
+    private void checkForDuplicateTask(List<Task> tasks){
         // Empty the List each time to avoid floooding the List
         tasks.clear();
         for (int i = 0; i < tasks.size(); i++) {
