@@ -5,29 +5,22 @@ public class Scheduler {
     List<Task> reccurringTasks = new ArrayList<Tasks>();
 
     /* 
-    *  Time will be adjusted to the nearest fifteen minutes, with the type-handling done by the constructors   
-    *  Example code for working with Scheduler in Main: "setStartTime = new Scheduler(this.getStartTime());"
+    *   The following constructors can be utilized to create Tasks 
+    *   of Type Recurring Task, Transient Task, and Anti-Task.
+    *   The class that will create the Scheduler must fill in the constructor in this manner:
+    *   "Scheduler <schedulerName> = new Scheduler(new <typeOfTask>, name, recurring, antiTask);"
     */
-
-    // Constructor handles a Task of type RecurringTask
-    private Scheduler(RecurringTask rt){ 
-        addTask(rt);       
-        getRoundedTime(rt.getStartTime());
-        getRoundedTime(rt.getEndTime());
+ 
+    private Scheduler(RecurringTask rt, String name, int startTime, boolean recurring, boolean antiTask){ 
+        addTask(rt, name, startTime, recurring, antiTask);               
     }
-
-    // Constructor handles a Task of type TransientTask
-    private Scheduler(TransientTask tt){      
-        addTask(tt);  
-        getRoundedTime(tt.getStartTime());
-        getRoundedTime(tt.getEndTime());
+    
+    private Scheduler(TransientTask tt, String name, int startTime, boolean recurring, boolean antiTask){      
+        addTask(tt, name, startTime, recurring, antiTask);  
     }    
-
-    // Constructor handles a Task of type AntiTask
-    private Scheduler(AntiTask at){
-        addTask(at);                        
-        getRoundedTime(at.getStartTime());
-        getRoundedTime(at.getEndTime());
+ 
+    private Scheduler(AntiTask at, String name, int startTime, boolean recurring, boolean antiTask){
+        addTask(at, name, startTime, recurring, antiTask);                        
     }    
     
     private List<Task> getAllTasks(){
@@ -48,7 +41,7 @@ public class Scheduler {
     }    
 
     private List<Task> getRecurringTasks(){            
-        reccuringTasks = checkForDuplicateReccuringTask(reccuringTasksTemp);    
+        reccuringTasks = checkForDuplicateReccuringTask(reccuringTasks);    
         return reccurringTasks;
     }
 
@@ -56,29 +49,34 @@ public class Scheduler {
         tasks.remove(task);
     }
 
-    private void addTask(Task task){
+    private void addTask(Task task, String name, int startTime, boolean recurring, boolean antiTask){
         tasks.add(task);
+        task.setName(name);
+        task.setStartTime(startTime);
+        getRoundedTime(task.getStartTime());
+        task.setRecurring(recurring);
+        task.setAntiTask(antiTask);        
     }
 
     // Round to nearest fifteen minutes
     private double roundNearestFifteenMinutes(double time){
-        if (startTime < 15) {
+        if (time < 15) {
             time = 0;
-        } else if (startTime < 30){
+        } else if (time < 30){
             time = 15;
-        } else if (startTime < 45){
+        } else if (time < 45){
             time = 30;
         } else {
             time = 45;
-        }   
+        } return time;  
     }
 
     // Value of Task must be modified to the nearest 15 minutes
-	private double getRoundedTime(double time){  
-        // Grab everything after the "." of the double value, i.e the minute value
-        String timeString = String.valueOf(time);
+	private void getRoundedTime(Task task){  
+        // Grab everything after the "." of the time (of type double), i.e the minute value
+        String timeString = String.valueOf(task.getStartTime());
         time = Double.parseDouble(startTimeString.substring(timeString.indexOf(".") + 1));                
-        return roundNearestFifteenMinutes(time);        
+        tasks = roundNearestFifteenMinutes(time);        
     }
 
     /* 
