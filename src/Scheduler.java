@@ -50,10 +50,9 @@ public class Scheduler {
     }
 
     public void addTask(Task task, String name, int startTime, boolean recurring, boolean antiTask){ 
-        // Set values in the task objct.       
+        // Set values in the task object.       
         task.setName(name);
-        task.setStartTime(startTime);
-        getRoundedTime(task.getStartTime());
+        task.setStartTime(getRoundedTime(task.getStartTime()));
         task.setRecurring(recurring);
         task.setAntiTask(antiTask);     
         // Add task to the List of Tasks  
