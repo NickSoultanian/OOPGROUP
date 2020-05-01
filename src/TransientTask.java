@@ -17,10 +17,10 @@ public class TransientTask implements Task {
 	private String startMonth = null;
 	private String startYear = null;
 
-	// Start date as a string for easier output
+	// Start date as a int for easier output
 	private int startDate = 0;
 
-	//Start time as a string for easier output
+	//Start time as a double for easier output
 	private double startTime = 0;
 
 	//End date will be set to the same as start day for Transient Task
