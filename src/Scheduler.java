@@ -1,8 +1,7 @@
 public class Scheduler {
 
-    private List<Task> tasks = new ArrayList<Tasks>();
-
-    private List<Task> reccurringTasks = new ArrayList<Tasks>();
+    private static List<Task> tasks = new ArrayList<Task>();
+    private static List<Task> reccurringTasks = new ArrayList<Task>();
 
     /* 
     *   The following constructors can be utilized to create Tasks 
@@ -50,7 +49,7 @@ public class Scheduler {
     }
 
     public void addTask(Task task, String name, double startTime, boolean recurring, boolean antiTask){ 
-        // Set values in the task object.       
+        // Set values in the Task object.       
         task.setName(name);
         task.setStartTime(getRoundedTime(startTime));
         task.setRecurring(recurring);
@@ -73,7 +72,7 @@ public class Scheduler {
     }
 
     // Value of Task must be modified to the nearest 15 minutes, e.g, 12.35 will return 12.30
-    private double getRoundedTime(double startTime){    
+	private double getRoundedTime(double startTime){    
         // Parse double to String in preparation of grabbing its substring.     
         String startTimeString = String.valueOf(startTime);
         // decimalInString is the index of the "." in the String
@@ -93,7 +92,7 @@ public class Scheduler {
     *  Iterate with a for loop in Main, check all Tasks (Recurring, Transient) in the Calendar to see if that Task is a duplicate. 
     */
 
-    // Check all Tasks for any duplicates
+    // Check all Tasks for any duplicates, return a List of duplicate Tasks (add Task to recurringTasks once if it is a duplicate)
     private void checkForDuplicateTask(List<Task> tasks){
         // Empty the List each time to avoid floooding the List
         tasks.clear();
@@ -103,8 +102,8 @@ public class Scheduler {
                     if(firstTask.get(i).getEndTime() == secondTask.get(j).getEndTime()){
                         if(firstTask.get(i).getDate() == secondTask.get(j).getDate()){
                             if(firstTask.get(i).getYear() == secondTask.get(j).getYear()){
-                                // Make sure the same task from the duplicate tasks is not added multiple times.
-                                if (!tasks.get(i).exists() || !tasks.get(j).exists()) reccuringTasks.add(tasks.get(i));                                                                         
+                                // Make sure the same Task is not added multiple times into the recurringTasks List.
+                                if (!recurringTasks.get(tasks.get(i)).exists() || !recurringTasks.get(tasks.get(j)).exists()) reccuringTasks.add(tasks.get(i));                                                                         
                             }
                         }
                     }
