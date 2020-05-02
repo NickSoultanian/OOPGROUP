@@ -1,6 +1,8 @@
 // Class File for javafx GUI 
 
 // impors for program
+import java.awt.event.ActionEvent;
+import java.beans.EventHandler;
 import java.util.Locale;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -46,17 +48,13 @@ public class gui extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
 
-        // variables to store text field data, data types pending adjust as needed
-        String name;
-
-
         // labels for fields
-        Label name = new Label("Name");
-        Label type = new Label("Type");
-        Label date = new Label("Date");
-        Label startTime = new Label("Start Time");
-        Label endTime = new Label("End Time");
-        Label freq = new Label("Frequency");
+        Label lName = new Label("Name");
+        Label lType = new Label("Type");
+        Label lDate = new Label("Date");
+        Label lStartTime = new Label("Start Time");
+        Label lEndTime = new Label("End Time");
+        Label lFreq = new Label("Frequency");
 
         // Button labels
         String submit = "Submit";
@@ -80,12 +78,12 @@ public class gui extends Application {
         GridPane root = new GridPane();  // root of view I think
 
         // adding text fields
-        root.addRow(0, name, tf_name);
-        root.addRow(1, type, tf_type);
-        root.addRow(2, date, tf_date);
-        root.addRow(3, startTime, tf_startTime);
-        root.addRow(4, endTime, tf_endTime);
-        root.addRow(5, freq, tf_freq);
+        root.addRow(0, lName, tf_name);
+        root.addRow(1, lType, tf_type);
+        root.addRow(2, lDate, tf_date);
+        root.addRow(3, lStartTime, tf_startTime);
+        root.addRow(4, lEndTime, tf_endTime);
+        root.addRow(5, lFreq, tf_freq);
 
         // add buttons
         // TODO add clear and view buttons inline
@@ -99,8 +97,18 @@ public class gui extends Application {
         primaryStage.setTitle("PSS");
         primaryStage.show();
 
-        // TODO set getters and setters
-        
+        // event handler using lambda expression
+        // TODO type checking/parsing and writing interation between other classes 
+        bSubmit.setOnAction(event -> {
+            // variables to store text field data, data types pending adjust as needed
+            String name = tf_name.getText();
+            String type = tf_type.getText();
+            String date = tf_date.getText();
+            String StartTime = tf_startTime.getText();
+            String endTime = tf_endTime.getText();
+            String freq = tf_freq.getText();
+        });
+
 
     }
 }
