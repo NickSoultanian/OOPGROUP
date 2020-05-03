@@ -109,6 +109,18 @@ public class gui extends Application {
             String freq = tf_freq.getText();
         });
 
+        bView.setOnAction(event -> {
+            display();
+        });
+    }
+    public static void display() {
+        Stage popUp = new Stage();
+        popUp.initModality(Modality.APPLICATION_MODAL);
+        popUp.setTitle("View Events");
+        VBox layout = new VBox(10);
+        Scene scene1 = new Scene(layout, 600, 600);
 
+        popUp.setScene(scene1);
+        popUp.showAndWait();
     }
 }
