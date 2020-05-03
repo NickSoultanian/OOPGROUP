@@ -1,12 +1,10 @@
-package OOPThereItIs;
-
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Scheduler {
 
-    private static List<Task> tasks = new ArrayList<Task>();
+    public static List<Task> tasks = new ArrayList<Task>();
 
     /* 
     *   The following constructors can be utilized to create Tasks 
