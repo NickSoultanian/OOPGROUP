@@ -112,6 +112,10 @@ public class PSSMain {
                     startDate = ((Number) taskObject[i].get("StartDate")).intValue();
                     System.out.println(startDate);
                 }
+                else if (taskObject[i].get("Date") != null){
+                    startDate = ((Number) taskObject[i].get("Date")).intValue();
+                    System.out.println(startDate);
+                }
 
 
                 double startTime = ((Number) taskObject[i].get("StartTime")).doubleValue();
@@ -129,7 +133,7 @@ public class PSSMain {
                     System.out.println(endDate);
                 }
                 int frequency = 0;
-                if(taskObject[i].get("Frquency")!=null){
+                if(taskObject[i].get("Frequency")!=null){
                     frequency = ((Long) taskObject[i].get("Frequency")).intValue();
                     System.out.println(frequency);
                 }

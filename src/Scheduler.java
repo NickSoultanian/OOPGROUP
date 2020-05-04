@@ -56,7 +56,7 @@ public class Scheduler {
 
         }
 
-        if(antiTask){
+       else if(antiTask){
             newTask = new AntiTask(name, startDate, startTime, duration);
             newTask.setStartTime(getRoundedTime(startTime));
             antiTask(newTask);
@@ -81,11 +81,11 @@ public class Scheduler {
      */
     public static int roundNearestFifteenMinutes(int time)
     {
-        if (time < 15) {
+        if (time < 25) {
             time = 00;
-        } else if (time < 30){
+        } else if (time < 50){
             time = 15;
-        } else if (time < 45){
+        } else if (time < 75){
             time = 30;
         } else {
             time = 45;
@@ -109,12 +109,20 @@ public class Scheduler {
         // decimalInString is the index of the "." in the String
         int decimalInString = Integer.parseInt(startTimeString.substring(startTimeString.indexOf(".")+1));
         System.out.println(decimalInString);
+        if (hasOneBit(decimalInString) == 1){
+            decimalInString *= 10;
+        }
         time = Integer.parseInt(startTimeString.substring(0,2)) + "." + df.format(roundNearestFifteenMinutes(decimalInString));
         System.out.println(time + " = time");
         // Parse back to Double
         finalTime = Double.parseDouble(time);
 
         return finalTime;
+    }
+
+    private static int hasOneBit(Integer num){
+        num = (num & -num);
+        return num;
     }
 
     /* 
@@ -134,6 +142,7 @@ public class Scheduler {
             if (fallsOnDay(newTask, i)) {
                 if (fallsWithinTimeConstraint(newTask, i)) {
                     flag = false;
+                    System.out.println("Time overlap");
                 }
             }
         }
@@ -150,7 +159,7 @@ public class Scheduler {
     private boolean fallsOnDay(Task newTask, int index)
     {
         double newTaskDay = newTask.getStartDate();
-        double oldTaskDay = tasks.get(index).getStartDay();
+        double oldTaskDay = tasks.get(index).getStartDate();
         if(newTaskDay == oldTaskDay){
             return true;
         }
@@ -181,6 +190,10 @@ public class Scheduler {
             return true;
         }
 
+        if(newTask.getStartTime() == tasks.get(index).getStartTime() || newTaskEndTime == oldTaskEndTime){
+            return true;
+        }
+
         //otherwise, times don't conflict, return true
         return false;
     }
@@ -191,10 +204,9 @@ public class Scheduler {
 
         Task newTask1 = newTask;
 
-        Task task;
         if(newTask1.getFrequency() == 1){
             while (newTask1.getStartDate() < newTask1.getEndDate()){
-                task = newTask1;
+                Task task = new RecurringTask(newTask1.getName(), newTask1.getType(), newTask1.getStartDate(), newTask1.getStartTime(), newTask1.getDuration(), newTask1.getEndDate(), newTask1.getFrequency());
 
                 if(!checkForDuplicateTask(task)){
                     //TODO Make better way to notify
@@ -245,7 +257,7 @@ public class Scheduler {
         }
         else if(newTask1.getFrequency() == 7){
             while(newTask1.getStartDate() < newTask1.getEndDate()){
-                task = newTask1;
+                Task task = new RecurringTask(newTask1.getName(), newTask1.getType(), newTask1.getStartDate(), newTask1.getStartTime(), newTask1.getDuration(), newTask1.getEndDate(), newTask1.getFrequency());
 
                 if(!checkForDuplicateTask(task)){
                     //TODO Make better way to notify
@@ -298,7 +310,7 @@ public class Scheduler {
         }
         else if (newTask1.getFrequency() == 30){
             while(newTask1.getStartDate() < newTask1.getEndDate()){
-                task = newTask1;
+                Task task = new RecurringTask(newTask1.getName(), newTask1.getType(), newTask1.getStartDate(), newTask1.getStartTime(), newTask1.getDuration(), newTask1.getEndDate(), newTask1.getFrequency());
 
                 if(!checkForDuplicateTask(task)){
                     //TODO Make better way to notify

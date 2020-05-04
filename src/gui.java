@@ -48,8 +48,8 @@ public class gui extends Application {
     private Object InvalidPropertiesFormatException;
 
     public static void main(String[] args, User user) {
-        launch(args);
         gui.user = user;
+        launch(args);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class gui extends Application {
         Label lType = new Label("Type");
         Label lDate = new Label("Date");
         Label lStartTime = new Label("Start Time");
-        Label lEndTime = new Label("End Time");
+        Label lDuration = new Label("Duration");
         Label lFreq = new Label("Frequency");
         Label lEndDate = new Label("EndDate");
 
@@ -74,7 +74,6 @@ public class gui extends Application {
         TextField tf_type = new TextField();
         TextField tf_date = new TextField();
         TextField tf_startTime = new TextField();
-        TextField tf_endTime = new TextField();
         TextField tf_duration = new TextField();
         TextField tf_endDate = new TextField();
         TextField tf_freq = new TextField();
@@ -92,7 +91,7 @@ public class gui extends Application {
         root.addRow(1, lType, tf_type);
         root.addRow(2, lDate, tf_date);
         root.addRow(3, lStartTime, tf_startTime);
-        root.addRow(4, lEndTime, tf_duration);
+        root.addRow(4, lDuration, tf_duration);
         root.addRow(5, lEndDate, tf_endDate);
         root.addRow(6, lFreq, tf_freq);
 
@@ -114,64 +113,91 @@ public class gui extends Application {
         bSubmit.setOnAction(event -> {
             try {
                 // variables to store text field data, data types pending adjust as needed
-                String name = tf_name.getText();
-                String type = tf_type.getText();
+                String name = "";
+                if (!tf_name.getText().isEmpty()){
+                    name = tf_name.getText();
+                    System.out.println("Name is " + name);
+                }
+                else {
+                    throw new Exception();
+                }
+
+                String type = "";
+                if (!tf_type.getText().isEmpty()){
+                    type = tf_type.getText();
+                    System.out.println("Type is " + type);
+                }
+                else {
+                    throw new Exception();
+                }
+
                 String date = "";
                 if(!tf_date.getText().isEmpty()){
                     date = tf_date.getText();
                 }
                 else{
-                    return;
+                    throw new Exception();
                 }
                 int startDate = Integer.parseInt(date);
+                System.out.println("Date is " + date);
 
                 String StartTime = "";
                 if(!tf_startTime.getText().isEmpty()) {
                     StartTime = tf_startTime.getText();
                 }
                 else{
-                    return;
+                    throw new Exception();
                 }
-                int startTime = Integer.parseInt(StartTime);
+                double startTime = Double.parseDouble(StartTime);
+                System.out.println("Start time is " + StartTime);
 
-                //String endTime = tf_endTime.getText();
                 String Duration = "";
+                double duration;
                 if(!tf_duration.getText().isEmpty()){
-                    Duration = tf_duration.getText();
+                    Duration =tf_duration.getText();
+                    System.out.println("Duration is " + Duration);
+                    duration = Double.parseDouble(Duration);
                 }
-                else{
-                    return;
+                else {
+                     throw new Exception();
                 }
-                int duration = Integer.parseInt(Duration);
 
                 String EndDate = "";
-                if(!tf_endDate.getText().isEmpty()) {
-                       EndDate = tf_endDate.getText();
+                int endDate;
+                if(!tf_endDate.getText().isEmpty()){
+                    EndDate = tf_endDate.getText();
+                    System.out.println("End date is "+ EndDate);
+                     endDate = Integer.parseInt(EndDate);
                 }
-                else{
-                    return;
+                else {
+                     endDate = 0;
                 }
-                int endDate = Integer.parseInt(EndDate);
+
 
                 String freq = "";
+                int frequency;
                 if(!tf_freq.getText().isEmpty()){
                     freq = tf_freq.getText();
+                    System.out.println("Freq is " + freq);
+                     frequency = Integer.parseInt(freq);
                 }
-                else{
-                    return;
+                else {
+                     frequency = 0;
                 }
-                int frequency = Integer.parseInt(freq);
 
-
-                if (freq.equals("")) {
+                //Create the appropriate task
+                if (frequency != 0) {
                     user.addrecurring(name, type, startDate, startTime, duration, endDate, frequency);
+                    System.out.println("Recurring made");
                 } else if (type.equals("Cancellation")) {
                     user.antitask(name, startDate, startTime, duration);
-                } else if (endDate == 0) {
+                    System.out.println("Anti made");
+                } else if (endDate == 0 && frequency == 0 ) {
                     user.addtransient(name, type, startDate, startTime, duration);
+                    System.out.println("Transient made");
                 }
             }catch(Exception e){
-
+                //TODO notify user that the input is bad
             }
         });
 
@@ -185,8 +211,18 @@ public class gui extends Application {
         popUp.setTitle("View Events");
         VBox layout = new VBox(10);
         Scene scene1 = new Scene(layout, 600, 600);
+        new DatePickerClass().start(popUp);
+        // popUp.setScene(scene1);
+        // popUp.showAndWait();
+    }
+   /* public static void display() {
+        Stage popUp = new Stage();
+        popUp.initModality(Modality.APPLICATION_MODAL);
+        popUp.setTitle("View Events");
+        VBox layout = new VBox(10);
+        Scene scene1 = new Scene(layout, 600, 600);
 
         popUp.setScene(scene1);
         popUp.showAndWait();
-    }
+    }*/
 }
