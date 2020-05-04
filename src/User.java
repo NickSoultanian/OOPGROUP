@@ -41,28 +41,17 @@ public class User {
         int index = scheduler.tasks.indexOf(name);
         if(index!=-1)
         {
-            scheduler.tasks.set(index,null);
+            scheduler.tasks.remove(index);
         }
     }
 
-    public void edittask(String name)
-    {
-        int index = scheduler.tasks.indexOf(name);
-        if(index!=0)
-        {
-            viewtask(name);
-
-
-        }
-
-    }
 
     public void modifyName(String name, String modification)
     {
         int index= scheduler.tasks.indexOf(name);
         if(index!=-1)
         {
-            scheduler.tasks.setname(modification);
+            scheduler.tasks.get(index).setName(modification);
 
         }
     }
@@ -72,7 +61,7 @@ public class User {
         int index= scheduler.tasks.indexOf(name);
         if(index!=-1)
         {
-            scheduler.tasks.settype(modification);
+            scheduler.tasks.get(index).setName(modification);
 
         }
     }
@@ -82,7 +71,7 @@ public class User {
         int index= scheduler.tasks.indexOf(name);
         if(index!=-1)
         {
-            scheduler.tasks.setstartdate(modification);
+            scheduler.tasks.get(index).setStartDate(modification);
 
         }
     }
@@ -92,7 +81,7 @@ public class User {
         int index= scheduler.tasks.indexOf(name);
         if(index!=-1)
         {
-            scheduler.tasks.setstartTime(modification);
+            scheduler.tasks.get(index).setStartTime(modification);
 
         }
     }
@@ -102,7 +91,7 @@ public class User {
         int index= scheduler.tasks.indexOf(name);
         if(index!=-1)
         {
-            scheduler.tasks.setDuration(modification);
+            scheduler.tasks.get(index).setDuration(modification);
 
         }
     }
@@ -112,7 +101,7 @@ public class User {
         int index= scheduler.tasks.indexOf(name);
         if(index!=-1)
         {
-            scheduler.tasks.setEndDate(modification);
+            scheduler.tasks.get(index).setEndDate(modification);
 
         }
     }
@@ -122,7 +111,7 @@ public class User {
         int index= scheduler.tasks.indexOf(name);
         if(index!=-1)
         {
-            scheduler.tasks.setFrequency(modification);
+            scheduler.tasks.get(index).setFrequency(modification);
 
         }
     }
