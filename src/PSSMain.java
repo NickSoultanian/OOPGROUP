@@ -9,7 +9,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 public class PSSMain {
-
+        public static User user = new User();
         public static void main(String[] args) {
             //instantiating json parser and the scanner
             JSONParser jsonParser = new JSONParser();
@@ -18,10 +18,10 @@ public class PSSMain {
             System.out.println("Please enter the file to open: ");
             String userString = userInput.nextLine();
 
-            //instantiate a scheduler object here!
-
             //start by opening a current calender json file
+
             ReadJsonFile(userString, jsonParser);
+
             userString = "y";
             String newUserString;
             while(userString.equals("y")) {
@@ -36,6 +36,9 @@ public class PSSMain {
                 ReadJsonFile(newUserString, jsonParser);
 
             }
+
+            gui gui = new gui();
+            gui.main(args, user);
 
 
 
@@ -57,12 +60,11 @@ public class PSSMain {
                 JSONArray taskList = (JSONArray) tempTask;
                 System.out.println(taskList); //test the JSONArray
 
-                Object[] objArr;
                 //call the ParseTaskObject method and pass in JSONArray, save to object array
-                objArr = ParseTaskObject(taskList);
+                Object[] objArr = ParseTaskObject(taskList);
 
                 //test for all objects in the array
-                System.out.println(objArr[0] + "\n");
+                //System.out.println(objArr[0] + "\n");
                 //System.out.println(objArr[1] + "\n");
                 //System.out.println(objArr[2] + "\n");
                 //System.out.println(objArr[3] + "\n");
@@ -82,6 +84,7 @@ public class PSSMain {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+
         }
 
         //method to parse the JSONArray into separate objects of a
@@ -98,27 +101,50 @@ public class PSSMain {
                 taskObject[i] = (JSONObject) task.get(i);
 
                 //from here down, testing all content of each object
+                //  String nameTest = (String) task.get("name");
                 String name = (String) taskObject[i].get("Name");
                 System.out.println(name);
 
                 String type = (String) taskObject[i].get("Type");
                 System.out.println(type);
+                int startDate = 0;
+                if(((Number) taskObject[i].get("StartDate")) != null){
+                    startDate = ((Number) taskObject[i].get("StartDate")).intValue();
+                    System.out.println(startDate);
+                }
 
-                Long startDate = (Long) taskObject[i].get("StartDate");
-                System.out.println(startDate);
 
-                Long startTime = (Long) taskObject[i].get("StartTime");
+                double startTime = ((Number) taskObject[i].get("StartTime")).doubleValue();
                 System.out.println(startTime);
 
-                Double duration = (Double) taskObject[i].get("Duration");
+                double duration = ((Number) taskObject[i].get("Duration")).doubleValue();
                 System.out.println(duration);
+//
+//                if((((Long) taskObject[i].get("EndDate")).intValue()) == null){
+//
+//                }
+                int endDate = 0;
+                if(taskObject[i].get("EndDate")!= null){
+                    endDate = ((Long) taskObject[i].get("EndDate")).intValue();
+                    System.out.println(endDate);
+                }
+                int frequency = 0;
+                if(taskObject[i].get("Frquency")!=null){
+                    frequency = ((Long) taskObject[i].get("Frequency")).intValue();
+                    System.out.println(frequency);
+                }
 
-                Long endDate = (Long) taskObject[i].get("EndDate");
-                System.out.println(endDate);
+                if(frequency != 0){
+                    user.addrecurring(name, type, startDate, startTime, duration, endDate, frequency);
+                }
+                else if(type.equals("Cancellation")){
+                    user.antitask(name, startDate, startTime, duration);
+                }
+                else if(endDate == 0){
+                    user.addtransient(name, type, startDate, startTime, duration);
+                }
 
-                Long frequency = (Long) taskObject[i].get("Frequency");
-                System.out.println(frequency);
-                System.out.println();
+
                 //increase flag counter by one
                 i++;
             }while(i< task.size());

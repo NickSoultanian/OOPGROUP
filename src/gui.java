@@ -3,11 +3,14 @@
 // impors for program
 import java.awt.event.ActionEvent;
 import java.beans.EventHandler;
+import java.util.InvalidPropertiesFormatException;
 import java.util.Locale;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -41,8 +44,12 @@ import javafx.scene.layout.GridPane;
 
 
 public class gui extends Application {
-    public static void main(String[] args) {
+    public static User user;
+    private Object InvalidPropertiesFormatException;
+
+    public static void main(String[] args, User user) {
         launch(args);
+        gui.user = user;
     }
 
     @Override
@@ -55,6 +62,7 @@ public class gui extends Application {
         Label lStartTime = new Label("Start Time");
         Label lEndTime = new Label("End Time");
         Label lFreq = new Label("Frequency");
+        Label lEndDate = new Label("EndDate");
 
         // Button labels
         String submit = "Submit";
@@ -67,6 +75,8 @@ public class gui extends Application {
         TextField tf_date = new TextField();
         TextField tf_startTime = new TextField();
         TextField tf_endTime = new TextField();
+        TextField tf_duration = new TextField();
+        TextField tf_endDate = new TextField();
         TextField tf_freq = new TextField();
 
         // button declarations
@@ -82,13 +92,14 @@ public class gui extends Application {
         root.addRow(1, lType, tf_type);
         root.addRow(2, lDate, tf_date);
         root.addRow(3, lStartTime, tf_startTime);
-        root.addRow(4, lEndTime, tf_endTime);
-        root.addRow(5, lFreq, tf_freq);
+        root.addRow(4, lEndTime, tf_duration);
+        root.addRow(5, lEndDate, tf_endDate);
+        root.addRow(6, lFreq, tf_freq);
 
         // add buttons
         // TODO add clear and view buttons inline
         root.addRow(6, bSubmit);
-
+        root.addRow(7,bView);
         // create Scene
         Scene scene = new Scene(root, 800, 800);
 
@@ -97,16 +108,71 @@ public class gui extends Application {
         primaryStage.setTitle("PSS");
         primaryStage.show();
 
+
         // event handler using lambda expression
         // TODO type checking/parsing and writing interation between other classes 
         bSubmit.setOnAction(event -> {
-            // variables to store text field data, data types pending adjust as needed
-            String name = tf_name.getText();
-            String type = tf_type.getText();
-            String date = tf_date.getText();
-            String StartTime = tf_startTime.getText();
-            String endTime = tf_endTime.getText();
-            String freq = tf_freq.getText();
+            try {
+                // variables to store text field data, data types pending adjust as needed
+                String name = tf_name.getText();
+                String type = tf_type.getText();
+                String date = "";
+                if(!tf_date.getText().isEmpty()){
+                    date = tf_date.getText();
+                }
+                else{
+                    return;
+                }
+                int startDate = Integer.parseInt(date);
+
+                String StartTime = "";
+                if(!tf_startTime.getText().isEmpty()) {
+                    StartTime = tf_startTime.getText();
+                }
+                else{
+                    return;
+                }
+                int startTime = Integer.parseInt(StartTime);
+
+                //String endTime = tf_endTime.getText();
+                String Duration = "";
+                if(!tf_duration.getText().isEmpty()){
+                    Duration = tf_duration.getText();
+                }
+                else{
+                    return;
+                }
+                int duration = Integer.parseInt(Duration);
+
+                String EndDate = "";
+                if(!tf_endDate.getText().isEmpty()) {
+                       EndDate = tf_endDate.getText();
+                }
+                else{
+                    return;
+                }
+                int endDate = Integer.parseInt(EndDate);
+
+                String freq = "";
+                if(!tf_freq.getText().isEmpty()){
+                    freq = tf_freq.getText();
+                }
+                else{
+                    return;
+                }
+                int frequency = Integer.parseInt(freq);
+
+
+                if (freq.equals("")) {
+                    user.addrecurring(name, type, startDate, startTime, duration, endDate, frequency);
+                } else if (type.equals("Cancellation")) {
+                    user.antitask(name, startDate, startTime, duration);
+                } else if (endDate == 0) {
+                    user.addtransient(name, type, startDate, startTime, duration);
+                }
+            }catch(Exception e){
+
+            }
         });
 
         bView.setOnAction(event -> {
