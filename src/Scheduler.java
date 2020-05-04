@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Scheduler {
 
-    public static List<Task> tasks = new ArrayList<Task>();
+    public List<Task> tasks = new ArrayList<Task>();
 
     /* 
     *   The following constructors can be utilized to create Tasks 
@@ -191,11 +191,15 @@ public class Scheduler {
 
         Task newTask1 = newTask;
 
-        TransientTask task;
+        Task task;
         if(newTask1.getFrequency() == 1){
             while (newTask1.getStartDate() < newTask1.getEndDate()){
-                task = new TransientTask(newTask1.getName(), newTask1.getType(), newTask1.getStartDate(), newTask1.getStartTime(), newTask1.getDuration());
-                checkForDuplicateTask(task);
+                task = newTask1;
+
+                if(!checkForDuplicateTask(task)){
+                    //TODO Make better way to notify
+                    System.err.println("Task: " + task.getName() + " on " + task.getStartDate() + "conflicts with another task");
+                }
 
                 if(newTask1.getStartMonth() == 4 || newTask1.getStartMonth() == 6|| newTask1.getStartMonth() == 9 || newTask1.getStartMonth() == 11){
                     if(newTask1.getStartDay() == 30){
@@ -241,9 +245,12 @@ public class Scheduler {
         }
         else if(newTask1.getFrequency() == 7){
             while(newTask1.getStartDate() < newTask1.getEndDate()){
-                task = new TransientTask(newTask1.getName(), newTask1.getType(), newTask1.getStartDate(), newTask1.getStartTime(), newTask1.getDuration());
+                task = newTask1;
 
-                checkForDuplicateTask(task);
+                if(!checkForDuplicateTask(task)){
+                    //TODO Make better way to notify
+                    System.err.println("Task: " + task.getName() + " on " + task.getStartDate() + "conflicts with another task");
+                }
 
                 if(newTask1.getStartMonth() == 4 || newTask1.getStartMonth() == 6|| newTask1.getStartMonth() == 9 || newTask1.getStartMonth() == 11){
                     if(newTask1.getStartDay() > 23){
@@ -291,9 +298,12 @@ public class Scheduler {
         }
         else if (newTask1.getFrequency() == 30){
             while(newTask1.getStartDate() < newTask1.getEndDate()){
-                task = new TransientTask(newTask1.getName(), newTask1.getType(), newTask1.getStartDate(), newTask1.getStartTime(), newTask1.getDuration());
+                task = newTask1;
 
-                checkForDuplicateTask(task);
+                if(!checkForDuplicateTask(task)){
+                    //TODO Make better way to notify
+                    System.err.println("Task: " + task.getName() + " on " + task.getStartDate() + "conflicts with another task");
+                }
 
                 newTask1.setStartMonth(newTask1.getStartMonth() + 1);
 
