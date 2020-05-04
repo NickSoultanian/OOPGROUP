@@ -20,7 +20,7 @@ public class User {
         scheduler.addTask(name,"Cancellation",startDate,startTime,duration,startDate,0,false,true);
     }
 
-    public void viewtask(String name)
+    public void viewTask(String name)
     {
         int index = scheduler.tasks.indexOf(name);
         if(index!=-1)
@@ -34,6 +34,16 @@ public class User {
             System.out.println(scheduler.tasks.get(index).getFrequency());
 
         }
+    }
+
+    public Task returnTask(String name)
+    {
+        int index = scheduler.tasks.indexOf(name);
+        if(index != -1)
+        {
+            return scheduler.tasks.get(index);
+        }
+        else return null;
     }
 
     public void deletetask(String name)
