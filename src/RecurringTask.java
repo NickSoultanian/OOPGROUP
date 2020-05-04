@@ -128,6 +128,7 @@ public class RecurringTask implements Task {
 
     @Override
     public int getStartDay() {
+        compileStartDate();
         return Integer.parseInt(startDay);
     }
 
@@ -137,10 +138,12 @@ public class RecurringTask implements Task {
             this.startDay = String.valueOf(startDay);
         else
             this.startDay = String.format("%02d", startDay);
+        compileStartDate();
     }
 
     @Override
     public int getStartMonth() {
+        compileStartDate();
         return Integer.parseInt(startMonth);
     }
 
@@ -150,16 +153,19 @@ public class RecurringTask implements Task {
             this.startMonth = String.valueOf(startMonth);
         else
             this.startMonth = String.format("%02d", startMonth);
+        compileStartDate();
     }
 
     @Override
     public int getStartYear() {
+        compileStartDate();
         return Integer.parseInt(startYear);
     }
 
     @Override
     public void setStartYear(int startYear) {
         this.startYear = String.valueOf(startYear);
+        compileStartDate();
     }
 
     @Override
