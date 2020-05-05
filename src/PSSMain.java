@@ -1,5 +1,7 @@
 import java.io.*;
-import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -10,15 +12,73 @@ public class PSSMain {
 
         public PSSMain(User user) {
                 this.user = user;
+
+        }
+
+        public static void WriteJSonFile( List<Task> tasks, File userDefinedFile) {
+                List<JSONObject> temp = convertTaskToJSON(tasks);
+                try (FileWriter file = new FileWriter(userDefinedFile+".json"))
+                {
+                        file.write("[");
+                        for(int i = 0; i<temp.size();i++){
+                                file.write(temp.get(i).toString()+",\n");
+                                System.out.println(temp.get(i).toString());
+                        }
+                        file.write("]");
+                        file.flush();
+                } catch (
+                        IOException e) {
+                        e.printStackTrace();
+                }
+        }
+
+        public static List<JSONObject> convertTaskToJSON(List<Task> tasks){
+                List<JSONObject> newList = new ArrayList<>();
+                for(int i = 0; i< tasks.size(); i++){
+                        if(tasks.get(i).getFrequency()!=0){
+                                JSONObject newObject = new JSONObject();
+                                String tempName = tasks.get(i).getName();
+                                String tempType = tasks.get(i).getType();
+                                int tempStartDate = tasks.get(i).getStartDate();
+                                double tempStartTime = tasks.get(i).getStartTime();
+                                double tempDuration = tasks.get(i).getDuration();
+                                int tempFrequency = tasks.get(i).getFrequency();
+                                System.out.println(tasks.get(i).getName() + " = getName");
+
+                                newObject.put("Name",tempName);
+                                newObject.put("Type",tempType);
+                                newObject.put("StartDate",tempStartDate);
+                                newObject.put("StartTime",tempStartTime);
+                                newObject.put("Duration",tempDuration);
+                                newObject.put("EndDate",tempStartDate+1);
+                                newObject.put("Frequency",tempFrequency);
+
+                                if(i == 0){
+                                        newList.add(newObject);
+                                }
+                                newList.add(newObject);
+                        }else{
+                                JSONObject newObject = new JSONObject();
+                                String tempName = tasks.get(i).getName();
+                                String tempType = tasks.get(i).getType();
+                                int tempStartDate = tasks.get(i).getStartDate();
+                                double tempStartTime = tasks.get(i).getStartTime();
+                                double tempDuration = tasks.get(i).getDuration();
+
+                                newObject.put("Name",tempName);
+                                newObject.put("Type",tempType);
+                                newObject.put("StartDate",tempStartDate);
+                                newObject.put("StartTime",tempStartTime);
+                                newObject.put("Duration",tempDuration);
+
+                                newList.add(newObject);
+                        }
+                }
+                return newList;
         }
 
 
-    /**
-     * Takes in a .json file and a jsonParser to create tasks
-     * @param file - Location of the file
-     * @param jsonParser - jsonParser object
-     */
-    public static void ReadJsonFile (String file, JSONParser jsonParser)
+        public static void ReadJsonFile (String file, JSONParser jsonParser)
         {  //the scheduler object needs to be passed in as well.
                 try {
                         //using user-prompted text to access json file (in project folder)
@@ -34,11 +94,6 @@ public class PSSMain {
                         //call the ParseTaskObject method and pass in JSONArray, save to object array
                         Object[] objArr = ParseTaskObject(taskList);
 
-                        //test for all objects in the array
-                        //System.out.println(objArr[0] + "\n");
-                        //System.out.println(objArr[1] + "\n");
-                        //System.out.println(objArr[2] + "\n");
-                        //System.out.println(objArr[3] + "\n");
 
                 /*pass these objects to the scheduler class and handle this
                             //check to see if time conflict (start time and duration and frequency), only if time is within startdate and enddate
@@ -92,10 +147,7 @@ public class PSSMain {
 
                         double duration = ((Number) taskObject[i].get("Duration")).doubleValue();
                         System.out.println(duration);
-//
-//                if((((Long) taskObject[i].get("EndDate")).intValue()) == null){
-//
-//                }
+
                         int endDate = 0;
                         if (taskObject[i].get("EndDate") != null) {
                                 endDate = ((Long) taskObject[i].get("EndDate")).intValue();
@@ -114,7 +166,6 @@ public class PSSMain {
                         } else if (endDate == 0) {
                                 user.addtransient(name, type, startDate, startTime, duration);
                         }
-
 
                         //increase flag counter by one
                         i++;
