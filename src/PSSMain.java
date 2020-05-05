@@ -8,51 +8,17 @@ import org.json.simple.parser.ParseException;
 public class PSSMain {
         public static User user;
 
-//        public static void main(String[] args) {
-//                //instantiating json parser and the scanner
-//                JSONParser jsonParser = new JSONParser();
-//                Scanner userInput = new Scanner(System.in);
-//                //prompting user to import new tasks
-//                System.out.println("Please enter the file to open: ");
-//                String userString = userInput.nextLine();
-//
-//                //start by opening a current calender json file
-//
-//                ReadJsonFile(userString, jsonParser);
-//
-//                userString = "y";
-//                String newUserString;
-//                while (userString.equals("y")) {
-//                        System.out.println("Would you like to add more events? (y/n)");
-//                        userString = userInput.nextLine();
-//                        if (userString.equals("n")) {
-//                                break;
-//                        }
-//
-//                        System.out.println("Please enter the file to open: ");
-//                        newUserString = userInput.nextLine();
-//                        ReadJsonFile(newUserString, jsonParser);
-//
-//                }
-//
-//                gui gui = new gui();
-//                gui.main(args);
-//
-//
-//                //Save the current calender and what has been added.
-//                //I need to figure out how our scheduler is saving all of
-//
-//
-//        }
-
         public PSSMain(User user) {
                 this.user = user;
-
         }
 
 
-
-        public static void ReadJsonFile (String file, JSONParser jsonParser)
+    /**
+     * Takes in a .json file and a jsonParser to create tasks
+     * @param file - Location of the file
+     * @param jsonParser - jsonParser object
+     */
+    public static void ReadJsonFile (String file, JSONParser jsonParser)
         {  //the scheduler object needs to be passed in as well.
                 try {
                         //using user-prompted text to access json file (in project folder)

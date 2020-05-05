@@ -20,12 +20,13 @@ import javafx.stage.Stage;
 import org.json.simple.parser.JSONParser;
 
 /**
- *
+ * Main driving class of PSS
  */
 public class gui extends Application {
     public static User user = new User();
     public static PSSMain pssst = new PSSMain(user);
 
+    //Launches the GUI
     public static void main(String[] args) {
         launch(args);
     }
@@ -91,8 +92,6 @@ public class gui extends Application {
         dataEntryPane.add(bSubmit, 1, 8);
 
         // add buttons
-        // TODO add clear and view buttons inline
-
         buttonPane.getChildren().addAll(bCalendarView, bView);
         buttonPane.setSpacing(40);
         buttonPane.setAlignment(Pos.CENTER);
@@ -109,8 +108,9 @@ public class gui extends Application {
         primaryStage.setTitle("PSS");
         primaryStage.show();
 
-
         Stage openFileStage = new Stage();
+
+        //Event handler of Open File button
         bOpenFile.setOnAction(event ->{
             fileChooser.setTitle("Open JSON File");
             fileChooserConfig(fileChooser);
@@ -121,15 +121,13 @@ public class gui extends Application {
 
         });
 
-        // event handler using lambda expression
-        // TODO type checking/parsing and writing interation between other classes
+        //Event handler of Submit button
         bSubmit.setOnAction(event -> {
             try {
                 // variables to store text field data, data types pending adjust as needed
                 String name = "";
                 if (!tf_name.getText().isEmpty()){
                     name = tf_name.getText();
-                    System.out.println("Name is " + name);
                 }
                 else {
                     throw new Exception();
@@ -138,7 +136,6 @@ public class gui extends Application {
                 String type = "";
                 if (!tf_type.getText().isEmpty()){
                     type = tf_type.getText();
-                    System.out.println("Type is " + type);
                 }
                 else {
                     throw new Exception();
@@ -152,7 +149,6 @@ public class gui extends Application {
                     throw new Exception();
                 }
                 int startDate = Integer.parseInt(date);
-                System.out.println("Date is " + date);
 
                 String StartTime = "";
                 if(!tf_startTime.getText().isEmpty()) {
@@ -162,13 +158,11 @@ public class gui extends Application {
                     throw new Exception();
                 }
                 double startTime = Double.parseDouble(StartTime);
-                System.out.println("Start time is " + StartTime);
 
                 String Duration = "";
                 double duration;
                 if(!tf_duration.getText().isEmpty()){
                     Duration =tf_duration.getText();
-                    System.out.println("Duration is " + Duration);
                     duration = Double.parseDouble(Duration);
                 }
                 else {
@@ -179,7 +173,6 @@ public class gui extends Application {
                 int endDate;
                 if(!tf_endDate.getText().isEmpty()){
                     EndDate = tf_endDate.getText();
-                    System.out.println("End date is "+ EndDate);
                     endDate = Integer.parseInt(EndDate);
                 }
                 else {
@@ -191,7 +184,6 @@ public class gui extends Application {
                 int frequency;
                 if(!tf_freq.getText().isEmpty()){
                     freq = tf_freq.getText();
-                    System.out.println("Freq is " + freq);
                     frequency = Integer.parseInt(freq);
                 }
                 else {
@@ -201,13 +193,10 @@ public class gui extends Application {
                 //Create the appropriate task
                 if (frequency != 0) {
                     user.addrecurring(name, type, startDate, startTime, duration, endDate, frequency);
-                    System.out.println("Recurring made");
                 } else if (type.equals("Cancellation")) {
                     user.antitask(name, startDate, startTime, duration);
-                    System.out.println("Anti made");
                 } else if (endDate == 0 && frequency == 0 ) {
                     user.addtransient(name, type, startDate, startTime, duration);
-                    System.out.println("Transient made");
                 }
             }catch(Exception e){
                 //TODO notify user that the input is bad
@@ -224,6 +213,7 @@ public class gui extends Application {
         });
     }
 
+    //Provides a filter so that only .json files can be selected
     public void fileChooserConfig(FileChooser filechooser){
 
         filechooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("JSON files", "*.json*"));
@@ -237,6 +227,7 @@ public class gui extends Application {
 //        }
 //    }
 
+    //Displays the list of all the tasks
     public static void displayList(){
 
         Stage popUp = new Stage();
@@ -264,6 +255,8 @@ public class gui extends Application {
          textArea.clear();
     }
 
+    //Displays the calender with all the tasks
+    //TODO make tasks appear on calender
     public static void displayCalendar() {
         Stage popUp = new Stage();
         popUp.initModality(Modality.APPLICATION_MODAL);

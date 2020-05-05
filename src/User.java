@@ -64,7 +64,6 @@ public class User {
         String tempEndDate = "";
         String tempFrequency = "";
         String finalConcat = "";
-        System.out.println("Before loop");
         for(int i = 0; i<scheduler.tasks.size(); i ++){
             if(!scheduler.tasks.get(i).getName().isEmpty()) {
                 tempName = String.valueOf(scheduler.tasks.get(i).getName());
@@ -86,11 +85,8 @@ public class User {
             if(String.valueOf(scheduler.tasks.get(i).getClass()).compareTo("class RecurringTask") == 0){
                 tempFrequency = String.valueOf(scheduler.tasks.get(i).getFrequency());
             }
-            System.out.println("iteration "+i+ ", ");
             finalConcat += tempName + "\n" + tempType + "\n" + tempStartDate  + "\n" + tempStartTime  + "\n" + tempDuration  + "\n" + tempEndDate  + "\n" + tempFrequency  + "\n" + "\n";
         }
-      //  String finalConcat = tempName + "\n" + tempType + "\n" + tempStartDate  + "\n" + tempStartTime  + "\n" + tempDuration  + "\n" + tempEndDate  + "\n" + tempFrequency  + "\n" + "\n";
-        System.out.println(finalConcat);
         return finalConcat;
     }
 

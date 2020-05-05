@@ -54,6 +54,7 @@ public class Scheduler {
             newTask = new RecurringTask(name, type, startDate, startTime, duration, endDate, frequency );
             newTask.setStartTime(getRoundedTime(startTime));
             recurringTasks(newTask);
+            System.out.println("Recurring task made");
 
         }
 
@@ -61,12 +62,14 @@ public class Scheduler {
             newTask = new AntiTask(name, startDate, startTime, duration);
             newTask.setStartTime(getRoundedTime(startTime));
             antiTask(newTask);
+            System.out.println("Task cancelled");
         }
 
         else{
             newTask = new TransientTask(name, type, startDate, startTime, duration);
             newTask.setStartTime(getRoundedTime(startTime));
             checkForDuplicateTask(newTask);
+            System.out.println("Transient task made");
 
             //for transient tasks
         }
@@ -109,12 +112,10 @@ public class Scheduler {
         String startTimeString = String.valueOf(startTime);
         // decimalInString is the index of the "." in the String
         int decimalInString = Integer.parseInt(startTimeString.substring(startTimeString.indexOf(".")+1));
-        System.out.println(decimalInString);
         if (hasOneBit(decimalInString) == 1){
             decimalInString *= 10;
         }
         time = Integer.parseInt(startTimeString.substring(0,2)) + "." + df.format(roundNearestFifteenMinutes(decimalInString));
-        System.out.println(time + " = time");
         // Parse back to Double
         finalTime = Double.parseDouble(time);
 
@@ -143,7 +144,7 @@ public class Scheduler {
             if (fallsOnDay(newTask, i)) {
                 if (fallsWithinTimeConstraint(newTask, i)) {
                     flag = false;
-                    System.out.println("Time overlap");
+                    System.err.println("Task: " + tasks.get(i).getName() + " on " + tasks.get(i).getStartDate() + " at " + tasks.get(i).getStartTime() +  " conflicts with another task");
                 }
             }
         }
@@ -201,130 +202,104 @@ public class Scheduler {
 
     //Method to create recurring tasks
     //
-    private void recurringTasks(Task newTask){
+    private void recurringTasks(Task newTask) {
 
         Task newTask1 = newTask;
 
-        if(newTask1.getFrequency() == 1){
-            while (newTask1.getStartDate() < newTask1.getEndDate()){
+        if (newTask1.getFrequency() == 1) {
+            while (newTask1.getStartDate() < newTask1.getEndDate()) {
                 Task task = new RecurringTask(newTask1.getName(), newTask1.getType(), newTask1.getStartDate(), newTask1.getStartTime(), newTask1.getDuration(), newTask1.getEndDate(), newTask1.getFrequency());
 
-                if(!checkForDuplicateTask(task)){
+                if (!checkForDuplicateTask(task)) {
                     //TODO Make better way to notify
-                    System.err.println("Task: " + task.getName() + " on " + task.getStartDate() + "conflicts with another task");
                 }
 
-                if(newTask1.getStartMonth() == 4 || newTask1.getStartMonth() == 6|| newTask1.getStartMonth() == 9 || newTask1.getStartMonth() == 11){
-                    if(newTask1.getStartDay() == 30){
+                if (newTask1.getStartMonth() == 4 || newTask1.getStartMonth() == 6 || newTask1.getStartMonth() == 9 || newTask1.getStartMonth() == 11) {
+                    if (newTask1.getStartDay() == 30) {
                         newTask1.setStartDay(1);
                         newTask1.setStartMonth(newTask1.getStartMonth() + 1);
-                    }
-                    else {
+                    } else {
                         newTask1.setStartDay(newTask1.getStartDay() + 1);
                     }
-                }
-
-                else if(newTask1.getStartMonth() == 12){
-                    if(newTask1.getStartDay() == 31){
+                } else if (newTask1.getStartMonth() == 12) {
+                    if (newTask1.getStartDay() == 31) {
                         newTask1.setStartDay(1);
                         newTask1.setStartMonth(1);
                         newTask1.setStartYear(newTask1.getStartYear() + 1);
-                    }
-                    else {
+                    } else {
                         newTask1.setStartDay(newTask1.getStartDay() + 1);
                     }
-                }
-
-                else if(newTask1.getStartMonth() == 2){
-                    if(newTask1.getStartDay() == 28){
+                } else if (newTask1.getStartMonth() == 2) {
+                    if (newTask1.getStartDay() == 28) {
                         newTask1.setStartDay(1);
                         newTask1.setStartMonth(newTask1.getStartMonth() + 1);
-                    }
-                    else {
+                    } else {
                         newTask1.setStartDay(newTask1.getStartDay() + 1);
                     }
-                }
-
-                else{
-                    if(newTask1.getStartDay() == 31){
+                } else {
+                    if (newTask1.getStartDay() == 31) {
                         newTask1.setStartDay(1);
                         newTask1.setStartMonth(newTask1.getStartMonth() + 1);
-                    }
-                    else {
+                    } else {
                         newTask1.setStartDay(newTask1.getStartDay() + 1);
                     }
                 }
             }
-        }
-        else if(newTask1.getFrequency() == 7){
-            while(newTask1.getStartDate() < newTask1.getEndDate()){
+        } else if (newTask1.getFrequency() == 7) {
+            while (newTask1.getStartDate() < newTask1.getEndDate()) {
                 Task task = new RecurringTask(newTask1.getName(), newTask1.getType(), newTask1.getStartDate(), newTask1.getStartTime(), newTask1.getDuration(), newTask1.getEndDate(), newTask1.getFrequency());
 
-                if(!checkForDuplicateTask(task)){
+                if (!checkForDuplicateTask(task)) {
                     //TODO Make better way to notify
-                    System.err.println("Task: " + task.getName() + " on " + task.getStartDate() + "conflicts with another task");
                 }
 
-                if(newTask1.getStartMonth() == 4 || newTask1.getStartMonth() == 6|| newTask1.getStartMonth() == 9 || newTask1.getStartMonth() == 11){
-                    if(newTask1.getStartDay() > 23){
+                if (newTask1.getStartMonth() == 4 || newTask1.getStartMonth() == 6 || newTask1.getStartMonth() == 9 || newTask1.getStartMonth() == 11) {
+                    if (newTask1.getStartDay() > 23) {
                         newTask1.setStartDay((newTask1.getStartDay() + 7) - 30);
                         newTask1.setStartMonth(newTask1.getStartMonth() + 1);
-                    }
-                    else {
+                    } else {
                         newTask1.setStartDay(newTask1.getStartDay() + 7);
                     }
-                }
-
-
-                else if(newTask1.getStartMonth() == 12){
-                    if(newTask1.getStartDay() > 24){
+                } else if (newTask1.getStartMonth() == 12) {
+                    if (newTask1.getStartDay() > 24) {
                         newTask1.setStartDay((newTask1.getStartDay() + 7) - 31);
                         newTask1.setStartMonth(1);
                         newTask1.setStartYear(newTask1.getStartYear() + 1);
-                    }
-                    else {
+                    } else {
                         newTask1.setStartDay(newTask1.getStartDay() + 7);
                     }
-                }
-
-
-                else if(newTask1.getStartMonth() == 2){
-                    if(newTask1.getStartDay() > 21){
+                } else if (newTask1.getStartMonth() == 2) {
+                    if (newTask1.getStartDay() > 21) {
                         newTask1.setStartDay((newTask1.getStartDay() + 7) - 28);
                         newTask1.setStartMonth(newTask1.getStartMonth() + 1);
-                    }
-                    else {
+                    } else {
                         newTask1.setStartDay(newTask1.getStartDay() + 7);
                     }
-                }
-
-                else{
-                    if(newTask1.getStartDay() > 24){
+                } else {
+                    if (newTask1.getStartDay() > 24) {
                         newTask1.setStartDay((newTask1.getStartDay() + 7) - 31);
                         newTask1.setStartMonth(newTask1.getStartMonth() + 1);
-                    }
-                    else {
+                    } else {
                         newTask1.setStartDay(newTask1.getStartDay() + 7);
                     }
                 }
             }
-        }
-        else if (newTask1.getFrequency() == 30){
-            while(newTask1.getStartDate() < newTask1.getEndDate()){
+        } else if (newTask1.getFrequency() == 30) {
+            while (newTask1.getStartDate() < newTask1.getEndDate()) {
                 Task task = new RecurringTask(newTask1.getName(), newTask1.getType(), newTask1.getStartDate(), newTask1.getStartTime(), newTask1.getDuration(), newTask1.getEndDate(), newTask1.getFrequency());
 
-                if(!checkForDuplicateTask(task)){
+                if (!checkForDuplicateTask(task)) {
                     //TODO Make better way to notify
-                    System.err.println("Task: " + task.getName() + " on " + task.getStartDate() + "conflicts with another task");
                 }
 
                 newTask1.setStartMonth(newTask1.getStartMonth() + 1);
 
-                if(newTask1.getStartMonth() == 12){
+                if (newTask1.getStartMonth() == 12) {
                     newTask1.setStartMonth(1);
                     newTask1.setStartYear(newTask1.getStartYear() + 1);
                 }
             }
         }
     }
+}
 
