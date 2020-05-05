@@ -1,3 +1,4 @@
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -6,12 +7,12 @@ public class Scheduler {
 
     public List<Task> tasks = new ArrayList<Task>();
 
-    /* 
-    *   The following constructors can be utilized to create Tasks 
-    *   of Type Recurring Task, Transient Task, and Anti-Task.
-    *   The class that will create the Scheduler must fill in the constructor in this manner:
-    *   "Scheduler <schedulerName> = new Scheduler(new <typeOfTask>, name, recurring, antiTask);"
-    */
+    /*
+     *   The following constructors can be utilized to create Tasks
+     *   of Type Recurring Task, Transient Task, and Anti-Task.
+     *   The class that will create the Scheduler must fill in the constructor in this manner:
+     *   "Scheduler <schedulerName> = new Scheduler(new <typeOfTask>, name, recurring, antiTask);"
+     */
 
 
     /**
@@ -22,7 +23,7 @@ public class Scheduler {
     {
         //if date and name match
         for(int i =0; i<tasks.size(); i++ ) {
-            if (newTask.getStartDate() == tasks.get(i).getStartDate() && tasks.get(i).getName().compareTo(newTask.getName()) == 0) {
+            if (newTask.getStartDate() == tasks.get(i).getStartDate()) {
                 //if start time and duration match
                 if (newTask.getStartTime() == tasks.get(i).getStartTime() && newTask.getDuration() == tasks.get(i).getDuration()) {
                     tasks.remove(i);
@@ -56,7 +57,7 @@ public class Scheduler {
 
         }
 
-       else if(antiTask){
+        else if(antiTask){
             newTask = new AntiTask(name, startDate, startTime, duration);
             newTask.setStartTime(getRoundedTime(startTime));
             antiTask(newTask);
@@ -125,11 +126,11 @@ public class Scheduler {
         return num;
     }
 
-    /* 
-    *  Can be used to check for conflicting times.
-    *  Takes a Task List.
-    *  Iterate with a for loop in Main, check all Tasks (Recurring, Transient) in the Calendar to see if that Task is a duplicate. 
-    */
+    /*
+     *  Can be used to check for conflicting times.
+     *  Takes a Task List.
+     *  Iterate with a for loop in Main, check all Tasks (Recurring, Transient) in the Calendar to see if that Task is a duplicate.
+     */
 
 
     //Check all tasks in list for any conflicts in days and times,
@@ -326,4 +327,4 @@ public class Scheduler {
             }
         }
     }
-}
+
