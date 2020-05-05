@@ -1,60 +1,41 @@
-// Class File for javafx GUI 
 
-// impors for program
-import java.awt.event.ActionEvent;
-import java.beans.EventHandler;
-import java.util.InvalidPropertiesFormatException;
-import java.util.Locale;
+import java.awt.*;
+import java.io.File;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import org.json.simple.parser.JSONParser;
 
-// purpose - boiler plate program to test and get javafx running 
-// sample code uncomment to test
-//public class gui extends Application {
-//    Button button;
-//
-//    public static void main(String[] args){
-//        launch(args);
-//    }
-//
-//    @Override
-//    public void start(Stage primaryStage) throws Exception{
-//        primaryStage.setTitle("Example Title");
-//        button = new Button();
-//        button.setText("Click me");
-//
-//        StackPane layout = new StackPane();
-//        layout.getChildren().add(button);
-//
-//        Scene scene = new Scene(layout, 300, 250);
-//        primaryStage.setScene(scene);
-//        primaryStage.show();
-//    }
-//}
-
-
-
+/**
+ *
+ */
 public class gui extends Application {
-    public static User user;
-    private Object InvalidPropertiesFormatException;
+    public static User user = new User();
+    public static PSSMain pssst = new PSSMain(user);
 
-    public static void main(String[] args, User user) {
-        gui.user = user;
+    public static void main(String[] args) {
         launch(args);
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception{
 
+        new DatePickerClass();
+        FileChooser fileChooser = new FileChooser();
+        Desktop desktop = Desktop.getDesktop();
         // labels for fields
         Label lName = new Label("Name");
         Label lType = new Label("Type");
@@ -63,11 +44,14 @@ public class gui extends Application {
         Label lDuration = new Label("Duration");
         Label lFreq = new Label("Frequency");
         Label lEndDate = new Label("EndDate");
+        Label lHeader = new Label("-OR- Enter a new task below: ");
 
         // Button labels
         String submit = "Submit";
-        String View = "View";
+        String View = "View List";
+        String Calendar = "Display Calendar";
         String Clear = "Clear";
+        String OpenFile = "Open a JSON file...";
 
         // text fields
         TextField tf_name = new TextField();
@@ -82,25 +66,43 @@ public class gui extends Application {
         Button bSubmit = new Button(submit);
         Button bView = new Button(View);
         Button bClear = new Button(Clear);
+        Button bOpenFile = new Button(OpenFile);
+        Button bCalendarView = new Button(Calendar);
 
         // create view & scene & pane whatever it is
-        GridPane root = new GridPane();  // root of view I think
+        BorderPane root = new BorderPane();  // root of panes
+        HBox buttonPane = new HBox();       // pane to hold "view" buttons
+        GridPane dataEntryPane = new GridPane(); //pane to hold all text and textfields
+
+        dataEntryPane.setAlignment(Pos.CENTER);
+        dataEntryPane.setHgap(20);
+        dataEntryPane.setVgap(5);
 
         // adding text fields
-        root.addRow(0, lName, tf_name);
-        root.addRow(1, lType, tf_type);
-        root.addRow(2, lDate, tf_date);
-        root.addRow(3, lStartTime, tf_startTime);
-        root.addRow(4, lDuration, tf_duration);
-        root.addRow(5, lEndDate, tf_endDate);
-        root.addRow(6, lFreq, tf_freq);
+        dataEntryPane.add(bOpenFile, 0, 0);
+        dataEntryPane.add(lHeader,1,0);
+        dataEntryPane.addRow(1, lName, tf_name);
+        dataEntryPane.addRow(2, lType, tf_type);
+        dataEntryPane.addRow(3, lDate, tf_date);
+        dataEntryPane.addRow(4, lStartTime, tf_startTime);
+        dataEntryPane.addRow(5, lDuration, tf_duration);
+        dataEntryPane.addRow(6, lEndDate, tf_endDate);
+        dataEntryPane.addRow(7, lFreq, tf_freq);
+        dataEntryPane.add(bSubmit, 1, 8);
 
         // add buttons
         // TODO add clear and view buttons inline
-        root.addRow(6, bSubmit);
-        root.addRow(7,bView);
-        // create Scene
-        Scene scene = new Scene(root, 800, 800);
+
+        buttonPane.getChildren().addAll(bCalendarView, bView);
+        buttonPane.setSpacing(40);
+        buttonPane.setAlignment(Pos.CENTER);
+        buttonPane.setBackground(new Background(new BackgroundFill(Color.rgb(60, 170, 190), CornerRadii.EMPTY, Insets.EMPTY)));
+
+        root.setStyle("-fx-background-color: #DAE6F3;");
+        root.setCenter(dataEntryPane);
+        root.setBottom(buttonPane);
+
+        Scene scene = new Scene(root, 325, 325);
 
         // stage
         primaryStage.setScene(scene);
@@ -108,8 +110,19 @@ public class gui extends Application {
         primaryStage.show();
 
 
+        Stage openFileStage = new Stage();
+        bOpenFile.setOnAction(event ->{
+            fileChooser.setTitle("Open JSON File");
+            fileChooserConfig(fileChooser);
+            File file = fileChooser.showOpenDialog(openFileStage);
+            String fileName = file.toString();
+            JSONParser jParse = new JSONParser();
+            pssst.ReadJsonFile(fileName, jParse);
+
+        });
+
         // event handler using lambda expression
-        // TODO type checking/parsing and writing interation between other classes 
+        // TODO type checking/parsing and writing interation between other classes
         bSubmit.setOnAction(event -> {
             try {
                 // variables to store text field data, data types pending adjust as needed
@@ -159,7 +172,7 @@ public class gui extends Application {
                     duration = Double.parseDouble(Duration);
                 }
                 else {
-                     throw new Exception();
+                    throw new Exception();
                 }
 
                 String EndDate = "";
@@ -167,10 +180,10 @@ public class gui extends Application {
                 if(!tf_endDate.getText().isEmpty()){
                     EndDate = tf_endDate.getText();
                     System.out.println("End date is "+ EndDate);
-                     endDate = Integer.parseInt(EndDate);
+                    endDate = Integer.parseInt(EndDate);
                 }
                 else {
-                     endDate = 0;
+                    endDate = 0;
                 }
 
 
@@ -179,10 +192,10 @@ public class gui extends Application {
                 if(!tf_freq.getText().isEmpty()){
                     freq = tf_freq.getText();
                     System.out.println("Freq is " + freq);
-                     frequency = Integer.parseInt(freq);
+                    frequency = Integer.parseInt(freq);
                 }
                 else {
-                     frequency = 0;
+                    frequency = 0;
                 }
 
                 //Create the appropriate task
@@ -201,28 +214,91 @@ public class gui extends Application {
             }
         });
 
+
         bView.setOnAction(event -> {
-            display();
+            displayList();
+        });
+
+        bCalendarView.setOnAction(event -> {
+            displayCalendar();
         });
     }
-    public static void display() {
-        Stage popUp = new Stage();
-        popUp.initModality(Modality.APPLICATION_MODAL);
-        popUp.setTitle("View Events");
-        VBox layout = new VBox(10);
-        Scene scene1 = new Scene(layout, 600, 600);
-        new DatePickerClass().start(popUp);
-        // popUp.setScene(scene1);
-        // popUp.showAndWait();
-    }
-   /* public static void display() {
-        Stage popUp = new Stage();
-        popUp.initModality(Modality.APPLICATION_MODAL);
-        popUp.setTitle("View Events");
-        VBox layout = new VBox(10);
-        Scene scene1 = new Scene(layout, 600, 600);
 
-        popUp.setScene(scene1);
-        popUp.showAndWait();
-    }*/
+    public void fileChooserConfig(FileChooser filechooser){
+
+        filechooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("JSON files", "*.json*"));
+    }
+//    private void openFile(File file) {
+//        try {
+//            Desktop desktop = new Desktop;
+//            desktop.open(file);
+//        } catch (IOException ex) {
+//
+//        }
+//    }
+
+    public static void displayList(){
+
+        Stage popUp = new Stage();
+        ScrollPane sp = new ScrollPane();
+        popUp.initModality(Modality.APPLICATION_MODAL);
+        popUp.setTitle("View Events");
+        VBox layout = new VBox(10);
+        layout.getChildren().add(sp);
+        sp.setVmax(100);
+        sp.setHmax(1000);
+        sp.setPrefSize(0, 0);
+        String allTasksAsString = user.returnAllTasks();
+        TextArea textArea = new TextArea(allTasksAsString);
+        textArea.setEditable(true);
+        layout.getChildren().add(textArea);
+        sp.vvalueProperty().addListener(new ChangeListener<Number>() {
+            public void changed(ObservableValue<? extends Number> ov,
+                                Number old_val, Number new_val) {
+                //enter what we're putting in the scroll here;
+            }
+        });
+        Scene scene1 = new Scene(layout, 300, 300);
+         popUp.setScene(scene1);
+         popUp.showAndWait();
+         textArea.clear();
+    }
+
+    public static void displayCalendar() {
+        Stage popUp = new Stage();
+        popUp.initModality(Modality.APPLICATION_MODAL);
+        popUp.setTitle("View Events by day: ");
+        VBox layout = new VBox(10);
+       // Scene scene1 = new Scene(layout, 300, 200);
+        new DatePickerClass().start(popUp);
+    }
 }
+
+
+// purpose - boiler plate program to test and get javafx running
+// sample code uncomment to test
+//public class gui extends Application {
+//    Button button;
+//
+//    public static void main(String[] args){
+//        launch(args);
+//    }
+//
+//    @Override
+//    public void start(Stage primaryStage) throws Exception{
+//        primaryStage.setTitle("Example Title");
+//        button = new Button();
+//        button.setText("Click me");
+//
+//        StackPane layout = new StackPane();
+//        layout.getChildren().add(button);
+//
+//        Scene scene = new Scene(layout, 300, 250);
+//        primaryStage.setScene(scene);
+//        primaryStage.show();
+//    }
+//}
+
+
+//    private Object InvalidPropertiesFormatException;
+// private org.json.simple.parser.JSONParser JSONParser;
