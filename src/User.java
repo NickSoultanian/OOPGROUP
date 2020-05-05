@@ -1,4 +1,7 @@
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class User {
 
     private Scheduler scheduler = new Scheduler();
@@ -35,15 +38,60 @@ public class User {
 
         }
     }
-
-    public Task returnTask(String name)
-    {
-        int index = scheduler.tasks.indexOf(name);
-        if(index != -1)
-        {
-            return scheduler.tasks.get(index);
+    public Task returnTask(String name)     {
+        for(int i = 0; i < scheduler.tasks.size(); i++){
+            if(scheduler.tasks.get(i).getName().compareTo(name) == 0){
+                return scheduler.tasks.get(i);
+            }
+        }         return null;
+    }
+    public List<Task> returnTaskOnDay(int date){
+        List<Task> tasksOnDay = new ArrayList<Task>();
+        for(int i = 0; i < scheduler.tasks.size(); i++){
+            if(scheduler.tasks.get(i).getStartDate() == date){
+                tasksOnDay.add(scheduler.tasks.get(i));
+            }
         }
-        else return null;
+        return tasksOnDay;
+    }
+
+    public String returnAllTasks(){
+        String tempName= "";
+        String tempType= "";
+        String tempStartDate= "";
+        String tempStartTime = "";
+        String tempDuration = "";
+        String tempEndDate = "";
+        String tempFrequency = "";
+        String finalConcat = "";
+        System.out.println("Before loop");
+        for(int i = 0; i<scheduler.tasks.size(); i ++){
+            if(!scheduler.tasks.get(i).getName().isEmpty()) {
+                tempName = String.valueOf(scheduler.tasks.get(i).getName());
+            }
+            if(!scheduler.tasks.get(i).getType().isEmpty()) {
+                tempType = String.valueOf(scheduler.tasks.get(i).getType());
+            }
+            tempStartDate = String.valueOf(scheduler.tasks.get(i).getStartDate());
+            tempStartTime = String.valueOf(scheduler.tasks.get(i).getStartTime());
+
+            if(scheduler.tasks.get(i).getDuration()!= 0){
+                tempDuration = String.valueOf(scheduler.tasks.get(i).getDuration());
+            }
+
+            if(String.valueOf(scheduler.tasks.get(i).getClass()).compareTo("class RecurringTask") == 0){
+                tempEndDate = String.valueOf(scheduler.tasks.get(i).getEndDate());
+            }
+
+            if(String.valueOf(scheduler.tasks.get(i).getClass()).compareTo("class RecurringTask") == 0){
+                tempFrequency = String.valueOf(scheduler.tasks.get(i).getFrequency());
+            }
+            System.out.println("iteration "+i+ ", ");
+            finalConcat += tempName + "\n" + tempType + "\n" + tempStartDate  + "\n" + tempStartTime  + "\n" + tempDuration  + "\n" + tempEndDate  + "\n" + tempFrequency  + "\n" + "\n";
+        }
+      //  String finalConcat = tempName + "\n" + tempType + "\n" + tempStartDate  + "\n" + tempStartTime  + "\n" + tempDuration  + "\n" + tempEndDate  + "\n" + tempFrequency  + "\n" + "\n";
+        System.out.println(finalConcat);
+        return finalConcat;
     }
 
     public void deletetask(String name)
@@ -127,5 +175,3 @@ public class User {
     }
 
 }
-
-
