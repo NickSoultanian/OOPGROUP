@@ -112,12 +112,14 @@ public class gui extends Application {
 
         //Event handler of Open File button
         bOpenFile.setOnAction(event ->{
-            fileChooser.setTitle("Open JSON File");
-            fileChooserConfig(fileChooser);
-            File file = fileChooser.showOpenDialog(openFileStage);
-            String fileName = file.toString();
-            JSONParser jParse = new JSONParser();
-            pssst.ReadJsonFile(fileName, jParse);
+            try {
+                fileChooser.setTitle("Open JSON File");
+                fileChooserConfig(fileChooser);
+                File file = fileChooser.showOpenDialog(openFileStage);
+                String fileName = file.toString();
+                JSONParser jParse = new JSONParser();
+                pssst.ReadJsonFile(fileName, jParse);
+            }catch(Exception e){}
 
         });
 
