@@ -94,7 +94,7 @@ public class DatePickerClass extends Application {
                     if (String.valueOf(tempSched.tasks.get(i).getClass()).compareTo("class RecurringTask") == 0) {
                         tempFrequency = String.valueOf(tempSched.tasks.get(i).getFrequency());
                     }
-                    System.out.println("iteration " + i + ", ");
+
                     finalConcat += tempName + "\n" + tempType + "\n" + tempStartDate + "\n" + tempStartTime + "\n" + tempDuration + "\n" + tempEndDate + "\n" + tempFrequency + "\n" + "\n";
                     textArea.setText(finalConcat);
 
@@ -109,14 +109,13 @@ public class DatePickerClass extends Application {
         String tempDate;
         tempDate = String.valueOf(date);
         String[] stringyArr = tempDate.split("-");
-        System.out.println(stringyArr[0]);
-        System.out.println(stringyArr[1]);
+
         String year = stringyArr[0];
         String month= stringyArr[1];
         String day= stringyArr[2];
         tempDate = year + month + day;
         jsonDate = Integer.parseInt(tempDate);
-        System.out.println(jsonDate);
+
         return jsonDate;
     }
     public DatePickerClass ( User tempUser){

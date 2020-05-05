@@ -144,7 +144,7 @@ public class Scheduler {
             if (fallsOnDay(newTask, i)) {
                 if (fallsWithinTimeConstraint(newTask, i)) {
                     flag = false;
-                    System.err.println("Task: " + tasks.get(i).getName() + " on " + tasks.get(i).getStartDate() + " at " + tasks.get(i).getStartTime() +  " conflicts with another task");
+                    //System.err.println("Task: " + tasks.get(i).getName() + " on " + tasks.get(i).getStartDate() + " at " + tasks.get(i).getStartTime() +  " conflicts with another task");
                 }
             }
         }
