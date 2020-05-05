@@ -1,4 +1,3 @@
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +53,10 @@ public class User {
         }
         return tasksOnDay;
     }
+    public List<Task> returnTasksListAsList(){
 
+        return scheduler.tasks;
+    }
     public String returnAllTasks(){
         String tempName= "";
         String tempType= "";
@@ -87,6 +89,7 @@ public class User {
             }
             finalConcat += tempName + "\n" + tempType + "\n" + tempStartDate  + "\n" + tempStartTime  + "\n" + tempDuration  + "\n" + tempEndDate  + "\n" + tempFrequency  + "\n" + "\n";
         }
+
         return finalConcat;
     }
 
